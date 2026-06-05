@@ -7,16 +7,16 @@ export default function HeroSection({ onOpenRsvp, onOpenGift }) {
   useEffect(() => {
     const img = new Image();
     img.onload = () => setBgLoaded(true);
-    img.src = 'https://iili.io/CK4MAZB.jpg';
+    img.src = '/background.webp';
   }, []);
 
   return (
-    <header className="relative w-full h-[100vh] h-[100dvh] flex flex-col items-center justify-between pb-12 pt-10 overflow-hidden">
+    <header className="relative w-full h-[100vh] h-[100dvh] flex flex-col items-center justify-between pb-24 pt-10 overflow-hidden">
       {/* Background Image */}
       <div
         className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-opacity duration-1000 z-0"
         style={{
-          backgroundImage: bgLoaded ? "url('https://iili.io/CK4MAZB.jpg')" : 'none',
+          backgroundImage: bgLoaded ? "url('/background.webp')" : 'none',
           opacity: bgLoaded ? 1 : 0,
         }}
       />
@@ -49,14 +49,14 @@ export default function HeroSection({ onOpenRsvp, onOpenGift }) {
       </div>
 
       <div className="relative z-30 flex flex-col items-center justify-center w-full px-6 h-full mt-1 fade-in">
-        <div className="flex flex-col items-center justify-center mb-10">
+        <div className="flex flex-col items-center justify-center mt-2 mb-auto">
           <p className="text-white/95 text-[11px] tracking-[0.35em] uppercase font-light text-center leading-relaxed max-w-[320px] drop-shadow-md">
             Com a bênção de Deus<br />
-            e de seus pais
+            e de nossos pais
           </p>
         </div>
 
-        <div className="text-center mb-6">
+        <div className="text-center mb-6 mt-40">
           <h1 className="text-white font-script text-[5.25rem] leading-[0.75] text-floating-shadow">
             Danielly<br />
             <span className="text-3xl text-white font-serif italic inline-block my-2 drop-shadow-sm">&</span><br />
@@ -67,8 +67,6 @@ export default function HeroSection({ onOpenRsvp, onOpenGift }) {
         <p className="text-white/80 text-[10px] uppercase tracking-widest font-light mb-8 text-center max-w-[260px] leading-relaxed drop-shadow-md">
           Têm a alegria de convidar para celebrar a cerimônia de seu casamento
         </p>
-
-        <div className="w-px h-10 bg-gradient-to-b from-[#B65B46]/0 via-[#B65B46] to-[#B65B46]/0 mb-6" />
 
         <div className="bg-black/22 backdrop-blur-md border border-white/12 rounded-2xl px-6 py-3.5 flex flex-col items-center gap-2 mb-10 w-full max-w-[280px] shadow-lg">
           <div className="flex items-center gap-3 text-white text-base tracking-[0.2em] font-light drop-shadow-sm">

@@ -2,7 +2,7 @@ export default function DressCodeSection() {
   return (
     <section className="py-12 px-8 text-center relative">
       <i className="fa-solid fa-user-tie text-2xl text-[#B65B46] mb-5" />
-      <h3 className="font-serif text-2xl text-[#4A3B32] mb-3 italic">Dress Code</h3>
+      <h3 className="font-serif text-2xl text-[#4A3B32] mb-3 italic">Vestimenta</h3>
       <p className="uppercase tracking-[0.2em] text-xs font-bold text-[#4A3B32] mb-4">Traje Esporte Fino</p>
       <p className="text-[11px] text-[#4A3B32]/80 leading-relaxed max-w-[280px] mx-auto mb-6">
         Sugerimos o traje esporte fino para o nosso grande dia.

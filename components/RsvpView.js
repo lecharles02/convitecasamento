@@ -11,21 +11,32 @@ function StepSearch({ onFound }) {
 
   async function handleSearch() {
     if (!input.trim()) {
-      showToast('Por favor, digite um nome de busca (ex: charles).');
+      showToast('Por favor, digite o seu nome (ex: Beatriz ou Gilson).');
       return;
     }
     setLoading(true);
     setError(false);
     try {
-      const { data, error: err } = await supabase
+      const cleanedInput = input.toLowerCase().trim();
+      // 1. Search for guests matching either search_key or name
+      const { data: matchedGuests, error: err1 } = await supabase
         .from('guests')
         .select('*')
-        .eq('search_key', input.toLowerCase().trim());
+        .or(`search_key.eq.${cleanedInput},name.ilike.%${cleanedInput}%`);
 
-      if (err) throw err;
+      if (err1) throw err1;
 
-      if (data && data.length > 0) {
-        onFound(data);
+      if (matchedGuests && matchedGuests.length > 0) {
+        // Get all unique search keys from matched guests
+        const searchKeys = [...new Set(matchedGuests.map((g) => g.search_key))];
+        // 2. Fetch all members belonging to these families
+        const { data: familyMembers, error: err2 } = await supabase
+          .from('guests')
+          .select('*')
+          .in('search_key', searchKeys);
+
+        if (err2) throw err2;
+        onFound(familyMembers);
       } else {
         setError(true);
       }
@@ -68,24 +79,41 @@ function StepSearch({ onFound }) {
 
 function StepFamily({ family, onSuccess }) {
   const [checked, setChecked] = useState(() =>
-    Object.fromEntries(family.map((m) => [m.id, !m.confirmed]))
+    Object.fromEntries(family.map((m) => [m.id, !!m.confirmed]))
   );
   const [loading, setLoading] = useState(false);
+  const [cancelConfirmGuest, setCancelConfirmGuest] = useState(null);
   const showToast = useToast();
 
-  const toggle = (id, disabled) => {
-    if (disabled) return;
-    setChecked((prev) => ({ ...prev, [id]: !prev[id] }));
+  const toggle = (id, wasConfirmed) => {
+    const isCurrentlyChecked = !!checked[id];
+    
+    if (wasConfirmed && isCurrentlyChecked) {
+      const member = family.find((m) => m.id === id);
+      setCancelConfirmGuest(member);
+    } else {
+      setChecked((prev) => ({ ...prev, [id]: !prev[id] }));
+    }
   };
+
+  function handleCancelConfirm() {
+    if (cancelConfirmGuest) {
+      setChecked((prev) => ({ ...prev, [cancelConfirmGuest.id]: false }));
+      setCancelConfirmGuest(null);
+    }
+  }
 
   async function handleConfirm() {
     const toConfirm = family
       .filter((m) => !m.confirmed && checked[m.id])
       .map((m) => m.id);
 
-    const hasDisabled = family.some((m) => m.confirmed);
-    if (toConfirm.length === 0 && !hasDisabled) {
-      showToast('Por favor, selecione ao menos um membro para confirmar.');
+    const toCancel = family
+      .filter((m) => m.confirmed && !checked[m.id])
+      .map((m) => m.id);
+
+    if (toConfirm.length === 0 && toCancel.length === 0) {
+      showToast('Nenhuma alteração para salvar.');
       return;
     }
 
@@ -98,13 +126,29 @@ function StepFamily({ family, onSuccess }) {
           .in('id', toConfirm);
         if (error) throw error;
       }
+
+      if (toCancel.length > 0) {
+        const { error } = await supabase
+          .from('guests')
+          .update({ confirmed: false, confirmed_at: null })
+          .in('id', toCancel);
+        if (error) throw error;
+      }
+
       onSuccess();
     } catch {
-      showToast('Erro ao confirmar presença. Tente novamente.');
+      showToast('Erro ao salvar alterações. Tente novamente.');
     } finally {
       setLoading(false);
     }
   }
+
+  const hasCancellations = family.some((m) => m.confirmed && !checked[m.id]);
+  const buttonText = loading 
+    ? 'Enviando...' 
+    : hasCancellations 
+      ? 'Salvar Alterações' 
+      : 'Enviar Confirmação';
 
   return (
     <div className="flex flex-col gap-4">
@@ -115,64 +159,115 @@ function StepFamily({ family, onSuccess }) {
         Por favor, marque quem poderá comparecer:
       </p>
       <div className="flex flex-col gap-3 mb-6">
-        {family.map((member) => (
-          <label
-            key={member.id}
-            onClick={() => toggle(member.id, member.confirmed)}
-            className={`flex items-center justify-between bg-white border ${
-              member.confirmed ? 'border-[#B65B46]/50 bg-[#B65B46]/5' : 'border-[#B65B46]/20'
-            } p-4 rounded-xl cursor-pointer hover:border-[#B65B46] shadow-sm transition-colors`}
-          >
-            <span className="font-medium text-[#4A3B32] text-sm">
-              {member.name}{' '}
-              {member.confirmed && (
-                <span className="text-[9px] uppercase tracking-widest text-[#B65B46] font-bold ml-1">
-                  (Já Confirmado)
-                </span>
-              )}
-            </span>
-            <input
-              type="checkbox"
-              checked={member.confirmed ? true : !!checked[member.id]}
-              disabled={member.confirmed}
-              readOnly
-              className="w-5 h-5 cursor-pointer accent-[#B65B46]"
-            />
-          </label>
-        ))}
+        {family.map((member) => {
+          const isChecked = !!checked[member.id];
+          return (
+            <div
+              key={member.id}
+              onClick={() => toggle(member.id, member.confirmed)}
+              className={`flex items-center justify-between bg-white border ${
+                isChecked ? 'border-[#B65B46]/50 bg-[#B65B46]/5' : 'border-[#B65B46]/20'
+              } p-4 rounded-xl cursor-pointer hover:border-[#B65B46] shadow-sm transition-all`}
+            >
+              <span className="font-medium text-[#4A3B32] text-sm">
+                {member.name}{' '}
+                {member.confirmed && isChecked && (
+                  <span className="text-[9px] uppercase tracking-widest text-[#B65B46] font-bold ml-1">
+                    (Já Confirmado)
+                  </span>
+                )}
+                {member.confirmed && !isChecked && (
+                  <span className="text-[9px] uppercase tracking-widest text-red-500 font-bold ml-1">
+                    (Cancelar Presença)
+                  </span>
+                )}
+              </span>
+              <input
+                type="checkbox"
+                checked={isChecked}
+                readOnly
+                className="w-5 h-5 cursor-pointer accent-[#B65B46]"
+              />
+            </div>
+          );
+        })}
       </div>
       <button
         onClick={handleConfirm}
         disabled={loading}
         className="w-full bg-[#B65B46] text-white uppercase tracking-widest text-[10px] font-bold py-4 px-6 rounded-full shadow-lg btn-elegant"
       >
-        {loading ? 'Enviando...' : 'Enviar Confirmação'}
+        {buttonText}
       </button>
+
+      {/* Custom Confirmation Modal */}
+      {cancelConfirmGuest && (
+        <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 shadow-2xl w-full max-w-sm text-center border border-[#B65B46]/10 space-y-4 slide-up-enter">
+            <div className="w-16 h-16 bg-[#B65B46]/10 rounded-full flex items-center justify-center mx-auto text-[#B65B46]">
+              <i className="fa-solid fa-circle-exclamation text-2xl" />
+            </div>
+            
+            <div className="space-y-1">
+              <h4 className="font-serif text-lg text-[#4A3B32] font-semibold">Cancelar Presença?</h4>
+              <p className="text-xs text-[#4A3B32]/70 leading-relaxed px-2">
+                Tem certeza que deseja cancelar a confirmação de presença de <span className="font-bold text-[#4A3B32]">{cancelConfirmGuest.name}</span>?
+              </p>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button 
+                onClick={() => setCancelConfirmGuest(null)}
+                className="flex-1 py-3.5 text-[10px] font-bold uppercase tracking-wider text-[#4A3B32] border border-stone-200 rounded-xl hover:bg-stone-50 transition-all cursor-pointer"
+              >
+                Manter
+              </button>
+              <button 
+                onClick={handleCancelConfirm}
+                className="flex-1 py-3.5 text-[10px] font-bold uppercase tracking-wider text-white bg-[#B65B46] rounded-xl shadow-sm hover:bg-[#D48C79] transition-all cursor-pointer"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-function StepSuccess({ onClose }) {
+function StepSuccess({ onClose, onOpenGifts }) {
   return (
     <div className="flex flex-col items-center justify-center flex-1 text-center">
       <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
         <i className="fa-solid fa-check text-2xl text-green-600" />
       </div>
       <h3 className="font-serif text-2xl text-[#4A3B32] mb-2">Muito Obrigado!</h3>
-      <p className="text-sm text-[#4A3B32]/80 mb-8">
+      <p className="text-sm text-[#4A3B32]/80 mb-8 max-w-[280px] mx-auto leading-relaxed">
         Sua confirmação foi registrada com sucesso. Mal podemos esperar para celebrar com você!
       </p>
-      <button
-        onClick={onClose}
-        className="border border-[#4A3B32] text-[#4A3B32] uppercase tracking-widest text-[10px] font-bold py-3 px-8 rounded-full btn-elegant"
-      >
-        Voltar ao Início
-      </button>
+      
+      <div className="flex flex-col gap-3 w-full max-w-[250px] mx-auto">
+        <button
+          onClick={onOpenGifts}
+          className="w-full bg-[#B65B46] text-white uppercase tracking-widest text-[10px] font-bold py-4 px-6 rounded-full shadow-lg hover:bg-[#D48C79] transition-all duration-300 btn-elegant flex items-center justify-center gap-2"
+        >
+          <i className="fa-solid fa-gift" />
+          <span>Ver Lista de Presentes</span>
+        </button>
+        
+        <button
+          onClick={onClose}
+          className="w-full border border-[#4A3B32] text-[#4A3B32] uppercase tracking-widest text-[10px] font-bold py-3 px-6 rounded-full btn-elegant"
+        >
+          Voltar ao Início
+        </button>
+      </div>
     </div>
   );
 }
 
-export default function RsvpView({ onClose }) {
+export default function RsvpView({ onClose, onOpenGifts }) {
   const [step, setStep] = useState('search'); // 'search' | 'family' | 'success'
   const [family, setFamily] = useState([]);
 
@@ -207,7 +302,10 @@ export default function RsvpView({ onClose }) {
           <StepFamily family={family} onSuccess={() => setStep('success')} />
         )}
         {step === 'success' && (
-          <StepSuccess onClose={() => { handleReset(); onClose(); }} />
+          <StepSuccess 
+            onClose={() => { handleReset(); onClose(); }} 
+            onOpenGifts={() => { handleReset(); onOpenGifts(); }} 
+          />
         )}
       </div>
     </div>
