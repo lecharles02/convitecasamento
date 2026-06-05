@@ -329,14 +329,19 @@ export default function GiftView({ onClose }) {
 
   useEffect(() => {
     refreshTotal();
+    window.scrollTo(0, 0);
   }, []);
+
 
   const homeItems = ITEMS.filter((i) => i.category === 'lar');
   const cotasItems = ITEMS.filter((i) => i.category === 'cota');
   const mimosItems = ITEMS.filter((i) => i.category === 'mimos');
 
   return (
-    <div className="mobile-container bg-paper-texture fixed inset-0 z-50 overflow-y-auto slide-up-enter">
+    <div
+      className="mobile-container bg-paper-texture fixed inset-0 z-50 overflow-y-auto slide-up-enter"
+      ref={(el) => { if (el) el.scrollTop = 0; }}
+    >
       {/* Header */}
       <div className="sticky top-0 bg-[#FAF6F0]/90 backdrop-blur-md z-40 px-6 py-4 flex items-center border-b border-[#B65B46]/10">
         <button onClick={onClose} className="text-[#4A3B32] hover:text-[#B65B46] p-2 transition-colors">

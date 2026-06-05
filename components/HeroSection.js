@@ -1,24 +1,12 @@
 'use client';
-import { useEffect, useState } from 'react';
 
 export default function HeroSection({ onOpenRsvp, onOpenGift }) {
-  const [bgLoaded, setBgLoaded] = useState(false);
-
-  useEffect(() => {
-    const img = new Image();
-    img.onload = () => setBgLoaded(true);
-    img.src = '/background.webp';
-  }, []);
-
   return (
-    <header className="relative w-full h-[100vh] h-[100dvh] flex flex-col items-center justify-between pb-24 pt-10 overflow-hidden">
+    <header className="relative w-full h-[100vh] h-[100dvh] flex flex-col items-center justify-between pb-6 pt-0 overflow-hidden">
       {/* Background Image */}
       <div
-        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-opacity duration-1000 z-0"
-        style={{
-          backgroundImage: bgLoaded ? "url('/background.webp')" : 'none',
-          opacity: bgLoaded ? 1 : 0,
-        }}
+        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat z-0"
+        style={{ backgroundImage: "url('/background.webp')" }}
       />
 
       {/* Overlays */}
@@ -48,41 +36,42 @@ export default function HeroSection({ onOpenRsvp, onOpenGift }) {
         </svg>
       </div>
 
-      <div className="relative z-30 flex flex-col items-center justify-center w-full px-6 h-full mt-1 fade-in">
-        <div className="flex flex-col items-center justify-center mt-2 mb-auto">
-          <p className="text-white/95 text-[11px] tracking-[0.35em] uppercase font-light text-center leading-relaxed max-w-[320px] drop-shadow-md">
-            Com a bênção de Deus<br />
-            e de nossos pais
-          </p>
-        </div>
-
-        <div className="text-center mb-6 mt-40">
-          <h1 className="text-white font-script text-[5.25rem] leading-[0.75] text-floating-shadow">
-            Danielly<br />
-            <span className="text-3xl text-white font-serif italic inline-block my-2 drop-shadow-sm">&</span><br />
-            Leonardo
-          </h1>
-        </div>
-
-        <p className="text-white/80 text-[10px] uppercase tracking-widest font-light mb-8 text-center max-w-[260px] leading-relaxed drop-shadow-md">
-          Têm a alegria de convidar para celebrar a cerimônia de seu casamento
+      <div className="relative z-30 flex flex-col items-center justify-between w-full px-6 h-full py-8">
+        {/* Top: bênção */}
+        <p className="text-white/95 text-[11px] tracking-[0.35em] uppercase font-light text-center leading-relaxed">
+          Com a bênção de Deus<br />
+          e de nossos pais
         </p>
 
-        <div className="bg-black/22 backdrop-blur-md border border-white/12 rounded-2xl px-6 py-3.5 flex flex-col items-center gap-2 mb-10 w-full max-w-[280px] shadow-lg">
-          <div className="flex items-center gap-3 text-white text-base tracking-[0.2em] font-light drop-shadow-sm">
-            <span className="font-pt-serif">23</span>
-            <span className="text-[#B65B46] text-sm font-serif">•</span>
-            <span className="font-serif">Agosto</span>
-            <span className="text-[#B65B46] text-sm font-serif">•</span>
-            <span className="font-pt-serif">2026</span>
-          </div>
-          <div className="w-full h-px bg-white/10" />
-          <div className="uppercase tracking-[0.25em] text-[10px] text-[#D48C79] font-semibold drop-shadow-sm flex items-center justify-center gap-1.5">
-            <i className="fa-regular fa-clock text-[9px]" /> Domingo • às 16h00
+        {/* Center: names + date */}
+        <div className="flex flex-col items-center text-center">
+          <h1 className="text-white font-script text-[4.5rem] leading-[0.8] text-floating-shadow mb-4">
+            Danielly<br />
+            <span className="text-2xl text-white font-serif italic inline-block my-1">&</span><br />
+            Leonardo
+          </h1>
+
+          <p className="text-white/80 text-[10px] uppercase tracking-widest font-light mb-5 text-center max-w-[260px] leading-relaxed drop-shadow-md">
+            Têm a alegria de convidar para celebrar a cerimônia de seu casamento
+          </p>
+
+          <div className="bg-black/22 backdrop-blur-md border border-white/12 rounded-2xl px-6 py-3 flex flex-col items-center gap-2 w-full max-w-[280px] shadow-lg">
+            <div className="flex items-center gap-3 text-white text-base tracking-[0.2em] font-light drop-shadow-sm">
+              <span className="font-pt-serif">23</span>
+              <span className="text-[#B65B46] text-sm font-serif">•</span>
+              <span className="font-serif">Agosto</span>
+              <span className="text-[#B65B46] text-sm font-serif">•</span>
+              <span className="font-pt-serif">2026</span>
+            </div>
+            <div className="w-full h-px bg-white/10" />
+            <div className="uppercase tracking-[0.25em] text-[10px] text-[#D48C79] font-semibold drop-shadow-sm flex items-center justify-center gap-1.5">
+              <i className="fa-regular fa-clock text-[9px]" /> Domingo • às 16h00
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3.5 w-full max-w-[300px] mt-auto">
+        {/* Bottom: buttons */}
+        <div className="flex flex-col gap-3 w-full max-w-[300px]">
           <button
             onClick={onOpenRsvp}
             className="btn-premium-rsvp w-full text-[#FAF6F0] uppercase tracking-[0.22em] text-[11px] font-medium py-3.5 px-6 rounded-full flex items-center justify-center gap-3 cursor-pointer"

@@ -37,9 +37,15 @@ export default function VenueSection() {
               />
             </div>
 
-            <p className="text-[10px] text-[#4A3B32]/70 leading-relaxed mb-6 uppercase tracking-widest px-2">
+            <p className="text-[10px] text-[#4A3B32]/70 leading-relaxed uppercase tracking-widest px-2">
               Largo da Penha, 19 - Penha, RJ
             </p>
+
+            <div className="bg-emerald-50 border border-emerald-200/60 rounded-xl px-4 py-2 mb-4 max-w-[240px]">
+              <p className="text-[9px] text-emerald-700 font-semibold uppercase tracking-wider leading-relaxed text-center">
+                <i className="fa-solid fa-square-parking mr-1" /> Estacionamento gratuito na igreja
+              </p>
+            </div>
             <a
               href="https://maps.google.com/?q=Basílica+de+Nossa+Senhora+da+Penha,+Largo+da+Penha,+19"
               target="_blank"

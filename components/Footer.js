@@ -2,7 +2,7 @@ export default function Footer({ onOpenAdmin }) {
   return (
     <footer className="py-16 px-8 text-center bg-[#4A3B32] text-[#FAF6F0] relative overflow-hidden flex flex-col items-center justify-center">
       <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
-        <span className="font-script text-[180px] leading-none">D&amp;L</span>
+        <span className="font-script text-[180px] leading-none">DL</span>
       </div>
 
       <div className="relative z-10 w-full flex flex-col items-center">
@@ -16,7 +16,7 @@ export default function Footer({ onOpenAdmin }) {
         <div className="mt-10 w-12 h-px bg-[#D48C79]/20" />
 
         <p className="mt-6 text-[9px] tracking-[0.3em] text-[#FAF6F0]/40 uppercase mb-6">
-          Danielly &amp; Leonardo • 2026
+          Danielly e Leonardo • 2026
         </p>
 
         <button
