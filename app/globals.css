@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #FAF6F0;
+  --color-secondary: #4A3B32;
+  --color-accent: #B65B46;
+  --color-accent-light: #D48C79;
+
+  --font-sans: 'Montserrat', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-pt-serif: 'PT Serif', serif;
+  --font-script: 'Great Vibes', cursive;
+  --font-script-premium: 'Pinyon Script', cursive;
+  --font-script-alex: 'Alex Brush', cursive;
+}
+
+.text-floating-shadow {
+  text-shadow: 
+    0 4px 10px rgba(0, 0, 0, 0.55),
+    0 12px 28px rgba(0, 0, 0, 0.4),
+    0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+body {
+  color: #4A3B32;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bg-paper-texture {
+  background-color: #FAF6F0;
+}
+
+.mobile-container {
+  max-width: 420px;
+  margin: 0 auto;
+  background-color: #FAF6F0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  box-shadow: 0 0 40px rgba(0,0,0,0.12);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.view-hidden {
+  display: none !important;
+}
+
+.fade-in {
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up-enter {
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.btn-elegant {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-elegant:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(182, 91, 70, 0.25);
+}
+.btn-elegant:active:not(:disabled) {
+  transform: translateY(0);
+}
+.btn-elegant:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Premium RSVP Button (Rich Terracotta with Soft Top-Pronounced Glow) */
+.btn-premium-rsvp {
+  background: linear-gradient(135deg, rgba(175, 76, 55, 0.98) 0%, rgba(140, 50, 32, 0.98) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 190, 170, 0.7);
+  box-shadow: 
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.4),
+    0 -2px 10px rgba(182, 91, 70, 0.45),
+    0 -0.5px 3px rgba(255, 190, 170, 0.45),
+    0 3px 6px rgba(0, 0, 0, 0.25);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-premium-rsvp:hover:not(:disabled) {
+  transform: translateY(-3px);
+  border-color: rgba(255, 210, 195, 1);
+  box-shadow: 
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.5),
+    0 -3.5px 16px rgba(182, 91, 70, 0.65),
+    0 -1px 5px rgba(255, 190, 170, 0.6),
+    0 5px 12px rgba(182, 91, 70, 0.3);
+}
+
+.btn-premium-rsvp:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+/* Premium Gift Button (Warmer Champagne/Brown with Soft Top Gold Glow) */
+.btn-premium-gift {
+  background: linear-gradient(135deg, rgba(115, 90, 77, 0.8) 0%, rgba(90, 70, 60, 0.8) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 140, 121, 0.65);
+  box-shadow: 
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.25),
+    0 -2px 8px rgba(212, 140, 121, 0.35),
+    0 -0.5px 3px rgba(212, 140, 121, 0.35),
+    0 3px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-premium-gift:hover:not(:disabled) {
+  transform: translateY(-3px);
+  border-color: rgba(212, 140, 121, 1);
+  box-shadow: 
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.35),
+    0 -3.5px 14px rgba(212, 140, 121, 0.55),
+    0 -1px 5px rgba(212, 140, 121, 0.5),
+    0 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-premium-gift:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+/* Premium Gold Gradient Frame with rounded corners (transparent center) */
+.gold-gradient-frame {
+  position: absolute;
+  inset: 16px; /* inset-4 */
+  border-radius: 1rem; /* rounded-2xl */
+  padding: 1px; /* border thickness */
+  background: linear-gradient(135deg, 
+    rgba(250, 246, 240, 0.85) 0%, 
+    rgba(238, 210, 186, 0.7) 35%, 
+    rgba(212, 140, 121, 0.6) 75%, 
+    rgba(182, 91, 70, 0.75) 100%
+  );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  z-index: 20;
+  opacity: 0.8;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D48C79; border-radius: 4px; }
