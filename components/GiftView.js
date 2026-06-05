@@ -334,8 +334,7 @@ export default function GiftView({ onClose }) {
 
 
   const homeItems = ITEMS.filter((i) => i.category === 'lar');
-  const cotasItems = ITEMS.filter((i) => i.category === 'cota');
-  const mimosItems = ITEMS.filter((i) => i.category === 'mimos');
+  const cotasItems = ITEMS.filter((i) => i.category === 'cota' || i.category === 'mimos');
 
   return (
     <div
@@ -380,39 +379,35 @@ export default function GiftView({ onClose }) {
           </p>
         </div>
 
-        {/* Para o lar */}
+        {/* Produtos Físicos */}
         <div className="flex items-center gap-4 mb-6">
           <div className="flex-1 h-px bg-[#B65B46]/20" />
-          <h3 className="font-serif text-base text-[#4A3B32] italic">Para o nosso Lar</h3>
+          <h3 className="font-serif text-base text-[#4A3B32] italic">Produtos Físicos</h3>
           <div className="flex-1 h-px bg-[#B65B46]/20" />
         </div>
-        <div className="grid grid-cols-1 gap-4 mb-8">
+        <div className="grid grid-cols-1 gap-4 mb-10">
           {homeItems.map((item) => (
             <GiftCard key={item.id} item={item} totalCollected={0} onSelect={setSelectedItem} />
           ))}
         </div>
 
         {/* Cotas */}
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center gap-4 mb-4">
           <div className="flex-1 h-px bg-[#B65B46]/20" />
           <h3 className="font-serif text-base text-[#4A3B32] italic">Cotas</h3>
           <div className="flex-1 h-px bg-[#B65B46]/20" />
         </div>
-        <div className="grid grid-cols-1 gap-4 mb-8">
-          {cotasItems.map((item) => (
-            <GiftCard key={item.id} item={item} totalCollected={totalCollected} onSelect={setSelectedItem} />
-          ))}
+
+        {/* Cotas description */}
+        <div className="bg-[#B65B46]/5 border border-[#B65B46]/15 rounded-2xl px-5 py-4 mb-6">
+          <p className="text-[11px] text-[#4A3B32]/80 leading-relaxed text-center italic">
+            Caso prefira nos presentear em dinheiro, disponibilizamos algumas cotas simbólicas para contribuir com nossa lua de mel e com os projetos do nosso novo lar.
+          </p>
         </div>
 
-        {/* Mimos */}
-        <div className="flex items-center gap-4 mb-6">
-          <div className="flex-1 h-px bg-[#B65B46]/20" />
-          <h3 className="font-serif text-base text-[#4A3B32] italic">Mimos &amp; Brincadeiras</h3>
-          <div className="flex-1 h-px bg-[#B65B46]/20" />
-        </div>
         <div className="grid grid-cols-1 gap-4">
-          {mimosItems.map((item) => (
-            <GiftCard key={item.id} item={item} totalCollected={0} onSelect={setSelectedItem} />
+          {cotasItems.map((item) => (
+            <GiftCard key={item.id} item={item} totalCollected={totalCollected} onSelect={setSelectedItem} />
           ))}
         </div>
       </div>
