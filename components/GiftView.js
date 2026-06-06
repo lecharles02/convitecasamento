@@ -594,6 +594,34 @@ export default function GiftView({ onClose }) {
   const [funCounts, setFunCounts] = useState({}); // { itemId: count }
   const [animationClass, setAnimationClass] = useState('slide-up-enter');
 
+  // Handle device/browser back button for the payment modal
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handlePopState = () => {
+      if (selectedItem) {
+        setSelectedItem(null);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [selectedItem]);
+
+  const handleSelectGift = (item) => {
+    setSelectedItem(item);
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ modalOpen: true }, '');
+    }
+  };
+
+  const handleCloseModal = () => {
+    setSelectedItem(null);
+    if (typeof window !== 'undefined' && window.history.state?.modalOpen) {
+      window.history.back();
+    }
+  };
+
   async function refreshData() {
     try {
       const { data } = await supabase.from('gifts').select('item_name, price, gifter_name');
@@ -676,7 +704,7 @@ export default function GiftView({ onClose }) {
         {/* ── SECTION 1: LUA DE MEL (hero — emocional, valor livre) ── */}
         <HoneymoonCard
           collected={honeymoonCollected}
-          onSelect={setSelectedItem}
+          onSelect={handleSelectGift}
         />
 
         {/* ── SECTION 2: COTAS PARA O LAR ── */}
@@ -693,7 +721,7 @@ export default function GiftView({ onClose }) {
               key={item.id}
               item={item}
               quotasBought={Math.floor((quotaCollected[item.id] || 0) / item.price)}
-              onSelect={setSelectedItem}
+              onSelect={handleSelectGift}
             />
           ))}
         </div>
@@ -706,7 +734,7 @@ export default function GiftView({ onClose }) {
               key={item.id}
               item={item}
               count={funCounts[item.id] || 0}
-              onSelect={setSelectedItem}
+              onSelect={handleSelectGift}
             />
           ))}
         </div>
@@ -725,7 +753,7 @@ export default function GiftView({ onClose }) {
               key={item.id}
               item={item}
               claimedBy={claimedPhysical[item.id]}
-              onSelect={setSelectedItem}
+              onSelect={handleSelectGift}
             />
           ))}
         </div>
@@ -735,7 +763,7 @@ export default function GiftView({ onClose }) {
       {selectedItem && (
         <PaymentModal
           item={selectedItem}
-          onClose={() => setSelectedItem(null)}
+          onClose={handleCloseModal}
           onSuccess={handleSuccess}
         />
       )}

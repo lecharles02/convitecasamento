@@ -17,13 +17,54 @@ export default function Home() {
   const [view, setView] = useState('main'); // 'main' | 'rsvp' | 'gift' | 'admin'
   const [showAdminLogin, setShowAdminLogin] = useState(false);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('admin') === 'true' || window.location.hash === '#admin') {
-        setView('admin');
+  // Helper to navigate and update hash
+  const navigateTo = (newView) => {
+    if (typeof window === 'undefined') return;
+    if (newView === 'rsvp') {
+      window.location.hash = '#rsvp';
+    } else if (newView === 'gift') {
+      window.location.hash = '#presentes';
+    } else if (newView === 'admin') {
+      window.location.hash = '#admin';
+    } else if (newView === 'admin-login') {
+      window.location.hash = '#noivos';
+    } else {
+      if (window.location.hash) {
+        window.history.pushState(null, '', window.location.pathname + window.location.search);
       }
+      setView('main');
+      setShowAdminLogin(false);
     }
+  };
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      const params = new URLSearchParams(window.location.search);
+      
+      if (hash !== '#noivos') {
+        setShowAdminLogin(false);
+      }
+
+      if (params.get('admin') === 'true' || hash === '#admin') {
+        setView('admin');
+      } else if (hash === '#rsvp') {
+        setView('rsvp');
+      } else if (hash === '#presentes') {
+        setView('gift');
+      } else if (hash === '#noivos') {
+        setShowAdminLogin(true);
+      } else {
+        setView('main');
+      }
+    };
+
+    handleHashChange();
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   return (
@@ -32,8 +73,8 @@ export default function Home() {
       {view === 'main' && (
         <div className="mobile-container bg-paper-texture pb-8">
           <HeroSection
-            onOpenRsvp={() => setView('rsvp')}
-            onOpenGift={() => setView('gift')}
+            onOpenRsvp={() => navigateTo('rsvp')}
+            onOpenGift={() => navigateTo('gift')}
           />
           <Countdown />
           <VenueSection />
@@ -69,37 +110,37 @@ export default function Home() {
               Para evitar presentes que já temos em nossa casa, separamos algumas sugestões para aqueles que desejarem nos presentear. Com a nossa mudança, precisamos apenas de alguns itens pontuais para o novo lar.
             </p>
             <button
-              onClick={() => setView('gift')}
+              onClick={() => navigateTo('gift')}
               className="w-full max-w-[250px] bg-[#B65B46] text-white uppercase tracking-[0.2em] text-xs font-bold py-4 px-6 rounded-full shadow-lg hover:bg-[#D48C79] transition-all duration-300 mx-auto block"
             >
               Ver Lista de Presentes
             </button>
           </section>
 
-          <Footer onOpenAdmin={() => setShowAdminLogin(true)} />
+          <Footer onOpenAdmin={() => navigateTo('admin-login')} />
         </div>
       )}
 
       {/* RSVP View */}
       {view === 'rsvp' && (
-        <RsvpView onClose={() => setView('main')} onOpenGifts={() => setView('gift')} />
+        <RsvpView onClose={() => navigateTo('main')} onOpenGifts={() => navigateTo('gift')} />
       )}
 
       {/* Gift View */}
       {view === 'gift' && (
-        <GiftView onClose={() => setView('main')} />
+        <GiftView onClose={() => navigateTo('main')} />
       )}
 
       {/* Admin View */}
       {view === 'admin' && (
-        <AdminView onClose={() => setView('main')} />
+        <AdminView onClose={() => navigateTo('main')} />
       )}
 
       {/* Admin Login Modal */}
       {showAdminLogin && (
         <AdminLoginModal
-          onSuccess={() => { setShowAdminLogin(false); setView('admin'); }}
-          onClose={() => setShowAdminLogin(false)}
+          onSuccess={() => navigateTo('admin')}
+          onClose={() => navigateTo('main')}
         />
       )}
     </ToastProvider>
