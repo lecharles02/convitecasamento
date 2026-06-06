@@ -297,7 +297,11 @@ function PaymentModal({ item, onClose, onSuccess }) {
       if (isNaN(val) || val <= 0) { showToast('Insira um valor maior que R$ 0,00.'); return; }
     }
     setNameError(false);
-    setStep('payment');
+    if (isPhysical) {
+      handleFinalize();
+    } else {
+      setStep('payment');
+    }
   }
 
   function copyPix() {
@@ -367,11 +371,13 @@ function PaymentModal({ item, onClose, onSuccess }) {
                 <span className="text-[10px] text-[#4A3B32]/60">{quotaQty} cota{quotaQty > 1 ? 's' : ''}</span>
               )}
             </div>
-            <span className="text-[#B65B46] font-serif text-base shrink-0">
-              {isCustom
-                ? (customPrice ? fmt(parseFloat(customPrice)) : 'A definir')
-                : fmt(basePrice)}
-            </span>
+            {!isPhysical && (
+              <span className="text-[#B65B46] font-serif text-base shrink-0">
+                {isCustom
+                  ? (customPrice ? fmt(parseFloat(customPrice)) : 'A definir')
+                  : fmt(basePrice)}
+              </span>
+            )}
           </div>
 
           {/* Quota quantity selector */}
@@ -442,9 +448,20 @@ function PaymentModal({ item, onClose, onSuccess }) {
               </div>
               <button
                 onClick={handleProceed}
-                className="w-full bg-[#4A3B32] text-white uppercase tracking-widest text-[10px] font-bold py-4 rounded-xl shadow-md hover:bg-[#B65B46] transition-colors flex justify-center items-center"
+                disabled={loading}
+                className="w-full bg-[#4A3B32] text-white uppercase tracking-widest text-[10px] font-bold py-4 rounded-xl shadow-md hover:bg-[#B65B46] transition-colors flex justify-center items-center gap-2"
               >
-                Continuar <i className="fa-solid fa-arrow-right ml-2" />
+                {loading ? (
+                  <>
+                    <i className="fa-solid fa-spinner animate-spin" />
+                    <span>Salvando...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>{isPhysical ? 'Confirmar Presente' : 'Continuar'}</span>
+                    {!isPhysical && <i className="fa-solid fa-arrow-right" />}
+                  </>
+                )}
               </button>
             </div>
           )}
@@ -505,7 +522,9 @@ function PaymentModal({ item, onClose, onSuccess }) {
               </div>
               <h3 className="font-serif text-2xl text-[#4A3B32] mb-2">Muito Obrigado!</h3>
               <p className="text-sm text-[#4A3B32]/80 mb-8 leading-relaxed max-w-[260px]">
-                Sua contribuição e mensagem foram enviadas para o painel dos noivos. Com muito amor! 💕
+                {isPhysical
+                  ? 'Você escolheu presentear com este item! Agradecemos de coração. 💕'
+                  : 'Sua contribuição e mensagem foram enviadas para o painel dos noivos. Com muito amor! 💕'}
               </p>
               <button onClick={onClose} className="border border-[#4A3B32] text-[#4A3B32] uppercase tracking-widest text-[10px] font-bold py-3 px-8 rounded-full hover:bg-[#4A3B32] hover:text-white transition-colors">
                 Voltar à Lista
