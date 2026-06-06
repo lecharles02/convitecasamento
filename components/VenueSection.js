@@ -19,11 +19,11 @@ export default function VenueSection() {
               <path d="M20 16 Q50 16 76 16" stroke="#D48C79" strokeWidth="1" fill="none"/>
               <path d="M140 16 Q110 16 84 16" stroke="#D48C79" strokeWidth="1" fill="none"/>
             </svg>
-            <p className="font-bold text-[12px] text-[#4A3B32] tracking-[0.15em] uppercase">Basílica de N. Sra. da Penha</p>
+            <p className="font-bold text-sm text-[#4A3B32] tracking-[0.15em] uppercase">Basílica de N. Sra. da Penha</p>
 
             <div className="w-full mt-5 mb-4 rounded-2xl overflow-hidden border border-[#E9A088]/25 bg-stone-50 relative group shadow-[0_12px_28px_rgba(74,59,50,0.22),_0_5px_10px_rgba(0,0,0,0.08)] hover:translate-y-[-3px] hover:shadow-[0_20px_38px_rgba(74,59,50,0.32)] transition-all duration-300">
               <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm z-10 border border-[#D48C79]/20">
-                <span className="text-[8px] uppercase tracking-wider text-[#4A3B32] font-bold">Ver no Maps</span>
+                <span className="text-[10px] uppercase tracking-wider text-[#4A3B32] font-bold">Ver no Maps</span>
               </div>
               <iframe
                 src="https://maps.google.com/maps?q=Bas%C3%ADlica+de+Nossa+Senhora+da+Penha,+Largo+da+Penha,+19&t=&z=15&ie=UTF8&iwloc=&output=embed"
@@ -37,12 +37,12 @@ export default function VenueSection() {
               />
             </div>
 
-            <p className="text-[10px] text-[#4A3B32]/70 leading-relaxed uppercase tracking-widest px-2">
+            <p className="text-xs text-[#4A3B32]/75 leading-relaxed uppercase tracking-widest px-2">
               Largo da Penha, 19 - Penha, RJ
             </p>
 
             <div className="bg-emerald-50 border border-emerald-200/60 rounded-xl px-4 py-2 mb-4 max-w-[240px]">
-              <p className="text-[9px] text-emerald-700 font-semibold uppercase tracking-wider leading-relaxed text-center">
+              <p className="text-[11px] text-emerald-700 font-semibold uppercase tracking-wider leading-relaxed text-center">
                 <i className="fa-solid fa-square-parking mr-1" /> Estacionamento gratuito na igreja
               </p>
             </div>
@@ -50,7 +50,7 @@ export default function VenueSection() {
               href="https://maps.google.com/?q=Basílica+de+Nossa+Senhora+da+Penha,+Largo+da+Penha,+19"
               target="_blank"
               rel="noreferrer"
-              className="btn-premium-rsvp w-full text-[#FAF6F0] uppercase tracking-[0.22em] text-[10px] font-medium py-3.5 px-6 rounded-full flex items-center justify-center gap-3 cursor-pointer"
+              className="btn-premium-rsvp w-full text-[#FAF6F0] uppercase tracking-[0.22em] text-xs font-semibold py-3.5 px-6 rounded-full flex items-center justify-center gap-3 cursor-pointer"
             >
               <i className="fa-solid fa-location-arrow text-[#FAF6F0]/90" />
               <span>Abrir no GPS</span>
@@ -76,16 +76,16 @@ export default function VenueSection() {
             </svg>
 
             <div className="bg-[#B65B46]/5 rounded-xl px-4 py-2 mb-4 border border-[#B65B46]/10 max-w-[240px]">
-              <p className="text-[9px] text-[#B65B46] font-semibold uppercase tracking-wider leading-relaxed">
+              <p className="text-[11px] text-[#B65B46] font-semibold uppercase tracking-wider leading-relaxed">
                 <i className="fa-solid fa-location-dot mr-1" /> Após a cerimônia,<br />bem pertinho da igreja!
               </p>
             </div>
 
-            <p className="font-bold text-[12px] text-[#4A3B32] tracking-[0.15em] uppercase">Espaço Encaza</p>
+            <p className="font-bold text-sm text-[#4A3B32] tracking-[0.15em] uppercase">Espaço Encaza</p>
 
             <div className="w-full mt-4 mb-4 rounded-2xl overflow-hidden border border-[#E9A088]/25 bg-stone-50 relative group shadow-[0_12px_28px_rgba(74,59,50,0.22),_0_5px_10px_rgba(0,0,0,0.08)] hover:translate-y-[-3px] hover:shadow-[0_20px_38px_rgba(74,59,50,0.32)] transition-all duration-300">
               <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm z-10 border border-[#D48C79]/20">
-                <span className="text-[8px] uppercase tracking-wider text-[#4A3B32] font-bold">Ver no Maps</span>
+                <span className="text-[10px] uppercase tracking-wider text-[#4A3B32] font-bold">Ver no Maps</span>
               </div>
               <iframe
                 src="https://maps.google.com/maps?q=Rua+Tom%C3%A1s+Ribeiro,+15+Penha+Rio+de+Janeiro&t=&z=16&ie=UTF8&iwloc=&output=embed"
@@ -99,14 +99,14 @@ export default function VenueSection() {
               />
             </div>
 
-            <p className="text-[10px] text-[#4A3B32]/70 leading-relaxed mb-6 uppercase tracking-widest px-2">
+            <p className="text-xs text-[#4A3B32]/75 leading-relaxed mb-6 uppercase tracking-widest px-2">
               Rua Tomás Ribeiro, 15 - Penha, RJ
             </p>
             <a
               href="https://maps.google.com/?q=Rua+Tomás+Ribeiro,+15+Penha+Rio+de+Janeiro"
               target="_blank"
               rel="noreferrer"
-              className="btn-premium-rsvp w-full text-[#FAF6F0] uppercase tracking-[0.22em] text-[10px] font-medium py-3.5 px-6 rounded-full flex items-center justify-center gap-3 cursor-pointer"
+              className="btn-premium-rsvp w-full text-[#FAF6F0] uppercase tracking-[0.22em] text-xs font-semibold py-3.5 px-6 rounded-full flex items-center justify-center gap-3 cursor-pointer"
             >
               <i className="fa-solid fa-location-arrow text-[#FAF6F0]/90" />
               <span>Abrir no GPS</span>

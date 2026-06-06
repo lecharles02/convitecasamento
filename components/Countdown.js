@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 const Unit = ({ value, label }) => (
   <div className="flex flex-col items-center">
     <span className="text-5xl font-pt-serif font-light text-[#4A3B32] mb-1.5">{value}</span>
-    <span className="text-[10px] uppercase tracking-[0.25em] text-[#4A3B32]/70 font-medium">{label}</span>
+    <span className="text-xs uppercase tracking-[0.25em] text-[#4A3B32]/75 font-medium">{label}</span>
   </div>
 );
 

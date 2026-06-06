@@ -9,19 +9,19 @@ export default function Footer({ onOpenAdmin }) {
         <p className="font-serif italic text-base mb-4 text-[#FAF6F0]/90 leading-relaxed max-w-[250px]">
           "Acima de tudo, porém, revistam-se do amor, que é o elo perfeito."
         </p>
-        <span className="uppercase tracking-[0.3em] text-[9px] font-medium text-[#D48C79]">
+        <span className="uppercase tracking-[0.3em] text-xs font-semibold text-[#D48C79]">
           Colossenses 3:14
         </span>
 
         <div className="mt-10 w-12 h-px bg-[#D48C79]/20" />
 
-        <p className="mt-6 text-[9px] tracking-[0.3em] text-[#FAF6F0]/40 uppercase mb-6">
+        <p className="mt-6 text-[11px] tracking-[0.3em] text-[#FAF6F0]/50 uppercase mb-6">
           Danielly e Leonardo • 2026
         </p>
 
         <button
           onClick={onOpenAdmin}
-          className="flex items-center gap-2 text-[9px] uppercase tracking-widest text-[#FAF6F0]/30 hover:text-[#FAF6F0] transition-colors py-2 px-4 rounded-lg hover:bg-white/5"
+          className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#FAF6F0]/40 hover:text-[#FAF6F0] transition-colors py-2.5 px-4 rounded-lg hover:bg-white/5"
         >
           <i className="fa-solid fa-lock" /> Área dos Noivos
         </button>

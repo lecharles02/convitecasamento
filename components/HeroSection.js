@@ -38,7 +38,7 @@ export default function HeroSection({ onOpenRsvp, onOpenGift }) {
 
       <div className="relative z-30 flex flex-col items-center justify-between w-full px-6 h-full py-8">
         {/* Top: bênção */}
-        <p className="text-white/95 text-[11px] tracking-[0.35em] uppercase font-light text-center leading-relaxed">
+        <p className="text-white/95 text-xs tracking-[0.35em] uppercase font-light text-center leading-relaxed">
           Com a bênção de Deus<br />
           e de nossos pais
         </p>
@@ -51,7 +51,7 @@ export default function HeroSection({ onOpenRsvp, onOpenGift }) {
             Leonardo
           </h1>
 
-          <p className="text-white/80 text-[10px] uppercase tracking-widest font-light mb-5 text-center max-w-[260px] leading-relaxed drop-shadow-md">
+          <p className="text-white/80 text-xs uppercase tracking-widest font-light mb-5 text-center max-w-[280px] leading-relaxed drop-shadow-md">
             Têm a alegria de convidar para celebrar a cerimônia de seu casamento
           </p>
 
@@ -64,8 +64,8 @@ export default function HeroSection({ onOpenRsvp, onOpenGift }) {
               <span className="font-pt-serif">2026</span>
             </div>
             <div className="w-full h-px bg-white/10" />
-            <div className="uppercase tracking-[0.25em] text-[10px] text-[#D48C79] font-semibold drop-shadow-sm flex items-center justify-center gap-1.5">
-              <i className="fa-regular fa-clock text-[9px]" /> Domingo • às 16h00
+            <div className="uppercase tracking-[0.25em] text-xs text-[#D48C79] font-semibold drop-shadow-sm flex items-center justify-center gap-1.5">
+              <i className="fa-regular fa-clock text-xs" /> Domingo • às 16h00
             </div>
           </div>
         </div>
@@ -74,14 +74,14 @@ export default function HeroSection({ onOpenRsvp, onOpenGift }) {
         <div className="flex flex-col gap-3 w-full max-w-[300px]">
           <button
             onClick={onOpenRsvp}
-            className="btn-premium-rsvp w-full text-[#FAF6F0] uppercase tracking-[0.22em] text-[11px] font-medium py-3.5 px-6 rounded-full flex items-center justify-center gap-3 cursor-pointer"
+            className="btn-premium-rsvp w-full text-[#FAF6F0] uppercase tracking-[0.22em] text-xs font-semibold py-3.5 px-6 rounded-full flex items-center justify-center gap-3 cursor-pointer"
           >
             <i className="fa-solid fa-envelope text-base text-[#FAF6F0]/90" />
             <span>Confirmar Presença</span>
           </button>
           <button
             onClick={onOpenGift}
-            className="btn-premium-gift w-full text-[#FAF6F0] uppercase tracking-[0.22em] text-[11px] font-medium py-3.5 px-6 rounded-full flex items-center justify-center gap-3 cursor-pointer"
+            className="btn-premium-gift w-full text-[#FAF6F0] uppercase tracking-[0.22em] text-xs font-semibold py-3.5 px-6 rounded-full flex items-center justify-center gap-3 cursor-pointer"
           >
             <i className="fa-solid fa-gift text-base text-[#FAF6F0]/90" />
             <span>Lista de Presentes</span>

@@ -55,7 +55,7 @@ export default function Home() {
             </svg>
 
             <h1 className="font-serif text-3xl text-[#4A3B32] mb-1.5 italic tracking-wide">Lista de Presentes</h1>
-            <h2 className="uppercase tracking-[0.22em] text-[9px] font-bold text-[#B65B46] mb-3">
+            <h2 className="uppercase tracking-[0.22em] text-xs font-bold text-[#B65B46] mb-3">
               SUA PRESENÇA É O NOSSO MAIOR PRESENTE!
             </h2>
 
@@ -65,12 +65,12 @@ export default function Home() {
               <i className="fa-solid fa-heart text-[6px] text-[#C5A059]" />
               <div className="w-10 h-px bg-[#C5A059]/50" />
             </div>
-            <p className="text-[11px] text-[#4A3B32]/80 leading-relaxed mb-6 max-w-[280px] mx-auto">
+            <p className="text-sm text-[#4A3B32]/80 leading-relaxed mb-6 max-w-[280px] mx-auto">
               Para evitar presentes que já temos em nossa casa, separamos algumas sugestões para aqueles que desejarem nos presentear. Com a nossa mudança, precisamos apenas de alguns itens pontuais para o novo lar.
             </p>
             <button
               onClick={() => setView('gift')}
-              className="w-full max-w-[250px] bg-[#B65B46] text-white uppercase tracking-[0.2em] text-[10px] font-bold py-4 px-6 rounded-full shadow-lg hover:bg-[#D48C79] transition-all duration-300 mx-auto block"
+              className="w-full max-w-[250px] bg-[#B65B46] text-white uppercase tracking-[0.2em] text-xs font-bold py-4 px-6 rounded-full shadow-lg hover:bg-[#D48C79] transition-all duration-300 mx-auto block"
             >
               Ver Lista de Presentes
             </button>
