@@ -23,7 +23,7 @@ export default function VenueSection() {
 
             <div className="w-full mt-5 mb-4 rounded-2xl overflow-hidden border border-[#E9A088]/25 bg-stone-50 relative group shadow-[0_12px_28px_rgba(74,59,50,0.22),_0_5px_10px_rgba(0,0,0,0.08)] hover:translate-y-[-3px] hover:shadow-[0_20px_38px_rgba(74,59,50,0.32)] transition-all duration-300">
               <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm z-10 border border-[#D48C79]/20">
-                <span className="text-[10px] uppercase tracking-wider text-[#4A3B32] font-bold">Ver no Maps</span>
+                <span className="text-xs uppercase tracking-wider text-[#4A3B32] font-bold">Ver no Maps</span>
               </div>
               <iframe
                 src="https://maps.google.com/maps?q=Bas%C3%ADlica+de+Nossa+Senhora+da+Penha,+Largo+da+Penha,+19&t=&z=15&ie=UTF8&iwloc=&output=embed"
@@ -42,7 +42,7 @@ export default function VenueSection() {
             </p>
 
             <div className="bg-emerald-50 border border-emerald-200/60 rounded-xl px-4 py-2 mb-4 max-w-[240px]">
-              <p className="text-[11px] text-emerald-700 font-semibold uppercase tracking-wider leading-relaxed text-center">
+              <p className="text-xs text-emerald-700 font-semibold uppercase tracking-wider leading-relaxed text-center">
                 <i className="fa-solid fa-square-parking mr-1" /> Estacionamento gratuito na igreja
               </p>
             </div>
@@ -76,7 +76,7 @@ export default function VenueSection() {
             </svg>
 
             <div className="bg-[#B65B46]/5 rounded-xl px-4 py-2 mb-4 border border-[#B65B46]/10 max-w-[240px]">
-              <p className="text-[11px] text-[#B65B46] font-semibold uppercase tracking-wider leading-relaxed">
+              <p className="text-xs text-[#B65B46] font-semibold uppercase tracking-wider leading-relaxed">
                 <i className="fa-solid fa-location-dot mr-1" /> Após a cerimônia,<br />bem pertinho da igreja!
               </p>
             </div>
@@ -85,7 +85,7 @@ export default function VenueSection() {
 
             <div className="w-full mt-4 mb-4 rounded-2xl overflow-hidden border border-[#E9A088]/25 bg-stone-50 relative group shadow-[0_12px_28px_rgba(74,59,50,0.22),_0_5px_10px_rgba(0,0,0,0.08)] hover:translate-y-[-3px] hover:shadow-[0_20px_38px_rgba(74,59,50,0.32)] transition-all duration-300">
               <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm z-10 border border-[#D48C79]/20">
-                <span className="text-[10px] uppercase tracking-wider text-[#4A3B32] font-bold">Ver no Maps</span>
+                <span className="text-xs uppercase tracking-wider text-[#4A3B32] font-bold">Ver no Maps</span>
               </div>
               <iframe
                 src="https://maps.google.com/maps?q=Rua+Tom%C3%A1s+Ribeiro,+15+Penha+Rio+de+Janeiro&t=&z=16&ie=UTF8&iwloc=&output=embed"

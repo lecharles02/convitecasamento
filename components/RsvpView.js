@@ -50,7 +50,7 @@ function StepSearch({ onFound }) {
 
   return (
     <div className="mb-6">
-      <label className="block text-[10px] uppercase tracking-widest font-bold text-[#4A3B32] mb-2 ml-4">
+      <label className="block text-xs uppercase tracking-wider font-bold text-[#4A3B32] mb-3 ml-4">
         Nome no Convite
       </label>
       <input
@@ -59,12 +59,12 @@ function StepSearch({ onFound }) {
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         placeholder="Ex: Jaqueline"
-        className="w-full bg-white border border-[#B65B46]/20 rounded-full px-6 py-4 text-sm focus:outline-none focus:border-[#B65B46] shadow-sm mb-4"
+        className="w-full bg-white border border-[#B65B46]/20 rounded-full px-6 py-4 text-sm focus:outline-none focus:border-[#B65B46] shadow-sm mb-4.5"
       />
       <button
         onClick={handleSearch}
         disabled={loading}
-        className="w-full bg-[#4A3B32] text-white uppercase tracking-widest text-[10px] font-bold py-4 px-6 rounded-full btn-elegant flex justify-center items-center gap-2"
+        className="w-full bg-[#4A3B32] text-white uppercase tracking-wider text-xs font-bold py-4.5 px-6 rounded-full btn-elegant flex justify-center items-center gap-2"
       >
         <span>{loading ? 'Buscando...' : 'Buscar Convite'}</span>
         {loading && <i className="fa-solid fa-circle-notch fa-spin" />}
@@ -173,12 +173,12 @@ function StepFamily({ family, onSuccess }) {
               <span className="font-medium text-[#4A3B32] text-sm">
                 {member.name}{' '}
                 {member.confirmed && isChecked && (
-                  <span className="text-[9px] uppercase tracking-widest text-[#B65B46] font-bold ml-1">
+                  <span className="text-[11px] uppercase tracking-wider text-[#B65B46] font-bold ml-1.5">
                     (Já Confirmado)
                   </span>
                 )}
                 {member.confirmed && !isChecked && (
-                  <span className="text-[9px] uppercase tracking-widest text-red-500 font-bold ml-1">
+                  <span className="text-[11px] uppercase tracking-wider text-red-500 font-bold ml-1.5">
                     (Cancelar Presença)
                   </span>
                 )}
@@ -196,7 +196,7 @@ function StepFamily({ family, onSuccess }) {
       <button
         onClick={handleConfirm}
         disabled={loading}
-        className="w-full bg-[#B65B46] text-white uppercase tracking-widest text-[10px] font-bold py-4 px-6 rounded-full shadow-lg btn-elegant"
+        className="w-full bg-[#B65B46] text-white uppercase tracking-wider text-xs font-bold py-4.5 px-6 rounded-full shadow-lg btn-elegant"
       >
         {buttonText}
       </button>
@@ -210,8 +210,8 @@ function StepFamily({ family, onSuccess }) {
             </div>
             
             <div className="space-y-1">
-              <h4 className="font-serif text-lg text-[#4A3B32] font-semibold">Cancelar Presença?</h4>
-              <p className="text-xs text-[#4A3B32]/70 leading-relaxed px-2">
+              <h4 className="font-serif text-xl text-[#4A3B32] font-bold">Cancelar Presença?</h4>
+              <p className="text-sm text-[#4A3B32]/80 leading-relaxed px-2">
                 Tem certeza que deseja cancelar a confirmação de presença de <span className="font-bold text-[#4A3B32]">{cancelConfirmGuest.name}</span>?
               </p>
             </div>
@@ -219,13 +219,13 @@ function StepFamily({ family, onSuccess }) {
             <div className="flex gap-3 pt-2">
               <button 
                 onClick={() => setCancelConfirmGuest(null)}
-                className="flex-1 py-3.5 text-[10px] font-bold uppercase tracking-wider text-[#4A3B32] border border-stone-200 rounded-xl hover:bg-stone-50 transition-all cursor-pointer"
+                className="flex-1 py-3.5 text-xs font-bold uppercase tracking-wider text-[#4A3B32] border border-stone-200 rounded-xl hover:bg-stone-50 transition-all cursor-pointer"
               >
                 Manter
               </button>
               <button 
                 onClick={handleCancelConfirm}
-                className="flex-1 py-3.5 text-[10px] font-bold uppercase tracking-wider text-white bg-[#B65B46] rounded-xl shadow-sm hover:bg-[#D48C79] transition-all cursor-pointer"
+                className="flex-1 py-3.5 text-xs font-bold uppercase tracking-wider text-white bg-[#B65B46] rounded-xl shadow-sm hover:bg-[#D48C79] transition-all cursor-pointer"
               >
                 Confirmar
               </button>
@@ -249,10 +249,10 @@ function StepSuccess({ onClose, onOpenGifts }) {
         Sua confirmação foi registrada com sucesso. Mal podemos esperar para celebrar com você!
       </p>
       
-      <div className="flex flex-col gap-3 w-full max-w-[250px] mx-auto">
+      <div className="flex flex-col gap-3.5 w-full max-w-[250px] mx-auto">
         <button
           onClick={onOpenGifts}
-          className="w-full bg-[#B65B46] text-white uppercase tracking-widest text-[10px] font-bold py-4 px-6 rounded-full shadow-lg hover:bg-[#D48C79] transition-all duration-300 btn-elegant flex items-center justify-center gap-2"
+          className="w-full bg-[#B65B46] text-white uppercase tracking-wider text-xs font-bold py-4.5 px-6 rounded-full shadow-lg hover:bg-[#D48C79] transition-all duration-300 btn-elegant flex items-center justify-center gap-2"
         >
           <i className="fa-solid fa-gift" />
           <span>Ver Lista de Presentes</span>
@@ -260,7 +260,7 @@ function StepSuccess({ onClose, onOpenGifts }) {
         
         <button
           onClick={onClose}
-          className="w-full border border-[#4A3B32] text-[#4A3B32] uppercase tracking-widest text-[10px] font-bold py-3 px-6 rounded-full btn-elegant"
+          className="w-full border border-[#4A3B32] text-[#4A3B32] uppercase tracking-wider text-xs font-bold py-3.5 px-6 rounded-full btn-elegant"
         >
           Voltar ao Início
         </button>
