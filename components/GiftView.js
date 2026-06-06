@@ -267,6 +267,7 @@ function PaymentModal({ item, onClose, onSuccess }) {
   const [quotaQty, setQuotaQty] = useState(1);
   const [nameError, setNameError] = useState(false);
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
+  const [showPhysicalConfirm, setShowPhysicalConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const showToast = useToast();
 
@@ -298,7 +299,7 @@ function PaymentModal({ item, onClose, onSuccess }) {
     }
     setNameError(false);
     if (isPhysical) {
-      handleFinalize();
+      setShowPhysicalConfirm(true);
     } else {
       setStep('payment');
     }
@@ -347,6 +348,36 @@ function PaymentModal({ item, onClose, onSuccess }) {
             <div className="flex gap-3 w-full">
               <button onClick={() => setShowCloseConfirm(false)} className="flex-1 py-3.5 text-[10px] uppercase tracking-widest font-bold text-[#4A3B32] border border-[#4A3B32]/30 rounded-xl hover:bg-[#4A3B32]/5 transition-colors">Voltar</button>
               <button onClick={onClose} className="flex-1 py-3.5 text-[10px] uppercase tracking-widest font-bold bg-[#B65B46] text-white rounded-xl shadow-md hover:bg-[#D48C79] transition-colors">Sim, Fechar</button>
+            </div>
+          </div>
+        )}
+
+        {/* Physical Confirm Popup */}
+        {showPhysicalConfirm && (
+          <div className="absolute inset-0 z-[70] bg-[#FAF6F0]/95 backdrop-blur-md flex flex-col items-center justify-center p-8 text-center">
+            <div className="w-16 h-16 bg-[#B65B46]/10 rounded-full flex items-center justify-center mx-auto text-[#B65B46] mb-4">
+              <i className="fa-solid fa-gift text-2xl" />
+            </div>
+            <h4 className="font-serif text-lg text-[#4A3B32] mb-2 italic">Confirmar Escolha?</h4>
+            <p className="text-xs text-[#4A3B32]/80 mb-8 leading-relaxed max-w-[280px] mx-auto">
+              Ao confirmar, este item será **marcado como escolhido** e sairá da lista para outros convidados. Tem certeza?
+            </p>
+            <div className="flex gap-3 w-full">
+              <button 
+                onClick={() => setShowPhysicalConfirm(false)} 
+                className="flex-1 py-3.5 text-[10px] uppercase tracking-widest font-bold text-[#4A3B32] border border-[#4A3B32]/30 rounded-xl hover:bg-[#4A3B32]/5 transition-colors"
+              >
+                Voltar
+              </button>
+              <button 
+                onClick={() => {
+                  setShowPhysicalConfirm(false);
+                  handleFinalize();
+                }} 
+                className="flex-1 py-3.5 text-[10px] uppercase tracking-widest font-bold bg-[#B65B46] text-white rounded-xl shadow-md hover:bg-[#D48C79] transition-colors"
+              >
+                Confirmar
+              </button>
             </div>
           </div>
         )}
