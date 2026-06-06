@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { supabase } from '@/lib/supabase';
 import { useToast } from './ToastProvider';
 
@@ -325,7 +326,9 @@ function PaymentModal({ item, onClose, onSuccess }) {
     }
   }
 
-  return (
+  if (typeof window === 'undefined') return null;
+
+  return createPortal(
     <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-end justify-center sm:items-center">
       <div className="bg-[#FAF6F0] w-full max-w-[420px] rounded-t-3xl sm:rounded-3xl flex flex-col max-h-[92vh] shadow-2xl relative overflow-hidden">
 
@@ -511,7 +514,8 @@ function PaymentModal({ item, onClose, onSuccess }) {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
@@ -538,6 +542,7 @@ export default function GiftView({ onClose }) {
   const [quotaCollected, setQuotaCollected] = useState({}); // { itemId: amount }
   const [honeymoonCollected, setHoneymoonCollected] = useState(0);
   const [funCounts, setFunCounts] = useState({}); // { itemId: count }
+  const [animationClass, setAnimationClass] = useState('slide-up-enter');
 
   async function refreshData() {
     try {
@@ -597,7 +602,8 @@ export default function GiftView({ onClose }) {
 
   return (
     <div
-      className="mobile-container bg-paper-texture fixed inset-0 z-50 overflow-y-auto slide-up-enter"
+      className={`mobile-container bg-paper-texture fixed inset-0 z-50 overflow-y-auto ${animationClass}`}
+      onAnimationEnd={() => setAnimationClass('')}
       ref={(el) => { if (el) el.scrollTop = 0; }}
     >
       {/* Header */}

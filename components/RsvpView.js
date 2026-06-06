@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { supabase } from '@/lib/supabase';
 import { useToast } from './ToastProvider';
 
@@ -201,7 +202,7 @@ function StepFamily({ family, onSuccess }) {
       </button>
 
       {/* Custom Confirmation Modal */}
-      {cancelConfirmGuest && (
+      {cancelConfirmGuest && typeof window !== 'undefined' && createPortal(
         <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-6 shadow-2xl w-full max-w-sm text-center border border-[#B65B46]/10 space-y-4 slide-up-enter">
             <div className="w-16 h-16 bg-[#B65B46]/10 rounded-full flex items-center justify-center mx-auto text-[#B65B46]">
@@ -230,7 +231,8 @@ function StepFamily({ family, onSuccess }) {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
@@ -270,6 +272,7 @@ function StepSuccess({ onClose, onOpenGifts }) {
 export default function RsvpView({ onClose, onOpenGifts }) {
   const [step, setStep] = useState('search'); // 'search' | 'family' | 'success'
   const [family, setFamily] = useState([]);
+  const [animationClass, setAnimationClass] = useState('slide-up-enter');
 
   function handleReset() {
     setStep('search');
@@ -277,7 +280,10 @@ export default function RsvpView({ onClose, onOpenGifts }) {
   }
 
   return (
-    <div className="mobile-container bg-paper-texture fixed inset-0 z-50 overflow-y-auto slide-up-enter flex flex-col">
+    <div
+      className={`mobile-container bg-paper-texture fixed inset-0 z-50 overflow-y-auto ${animationClass} flex flex-col`}
+      onAnimationEnd={() => setAnimationClass('')}
+    >
       {/* Header */}
       <div className="sticky top-0 bg-[#FAF6F0]/90 backdrop-blur-md z-40 px-6 py-4 flex items-center border-b border-[#B65B46]/10">
         <button onClick={onClose} className="text-[#4A3B32] hover:text-[#B65B46] p-2">

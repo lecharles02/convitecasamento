@@ -32,6 +32,7 @@ export default function AdminView({ onClose }) {
   const [giftSortBy, setGiftSortBy] = useState('date_desc'); // 'date_desc' | 'date_asc' | 'price_desc' | 'price_asc'
   const [addingToFamily, setAddingToFamily] = useState(null);
   const [inlineGuestName, setInlineGuestName] = useState('');
+  const [animationClass, setAnimationClass] = useState('slide-up-enter');
   
   const showToast = useToast();
 
@@ -349,7 +350,10 @@ export default function AdminView({ onClose }) {
   }, [filteredGifts, giftSortBy]);
 
   return (
-    <div className="bg-stone-100 fixed inset-0 z-[70] overflow-y-auto slide-up-enter flex flex-col w-full h-full">
+    <div
+      className={`bg-stone-100 fixed inset-0 z-[70] overflow-y-auto ${animationClass} flex flex-col w-full h-full`}
+      onAnimationEnd={() => setAnimationClass('')}
+    >
       {/* Header */}
       <div className="sticky top-0 bg-[#4A3B32] text-[#FAF6F0] z-40 px-6 py-4 shadow-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between w-full px-4 sm:px-6">
