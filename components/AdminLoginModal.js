@@ -2,18 +2,35 @@
 import { useState } from 'react';
 import { useToast } from './ToastProvider';
 
-const ADMIN_PASSWORD = '2302';
-
 export default function AdminLoginModal({ onSuccess, onClose }) {
   const [pwd, setPwd] = useState('');
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const showToast = useToast();
 
-  function handleSubmit() {
-    if (pwd === ADMIN_PASSWORD) {
-      onSuccess();
-    } else {
-      setError(true);
+  async function handleSubmit() {
+    if (!pwd.trim()) {
+      showToast('Por favor, digite a senha.');
+      return;
+    }
+    setLoading(true);
+    setError(false);
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pwd }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        onSuccess();
+      } else {
+        setError(true);
+      }
+    } catch {
+      showToast('Erro ao validar a senha. Tente novamente.');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -37,8 +54,19 @@ export default function AdminLoginModal({ onSuccess, onClose }) {
           className="w-full bg-stone-100 border border-stone-200 rounded-xl px-4 py-3 text-center text-lg tracking-widest focus:outline-none focus:border-[#B65B46] mb-2"
         />
         {error && <p className="text-red-500 text-xs text-center mb-4">Senha incorreta.</p>}
-        <button onClick={handleSubmit} className="w-full mt-2 bg-[#4A3B32] text-white uppercase tracking-widest text-xs font-bold py-3.5 rounded-xl hover:bg-black transition-colors">
-          Entrar
+        <button 
+          onClick={handleSubmit} 
+          disabled={loading}
+          className="w-full mt-2 bg-[#4A3B32] text-white uppercase tracking-widest text-xs font-bold py-3.5 rounded-xl hover:bg-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        >
+          {loading ? (
+            <>
+              <i className="fa-solid fa-spinner animate-spin" />
+              <span>Validando...</span>
+            </>
+          ) : (
+            'Entrar'
+          )}
         </button>
       </div>
     </div>

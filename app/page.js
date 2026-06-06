@@ -6,10 +6,12 @@ import Countdown from '@/components/Countdown';
 import VenueSection from '@/components/VenueSection';
 import DressCodeSection from '@/components/DressCodeSection';
 import Footer from '@/components/Footer';
-import RsvpView from '@/components/RsvpView';
-import GiftView from '@/components/GiftView';
-import AdminLoginModal from '@/components/AdminLoginModal';
-import AdminView from '@/components/AdminView';
+import dynamic from 'next/dynamic';
+
+const RsvpView = dynamic(() => import('@/components/RsvpView'), { ssr: false });
+const GiftView = dynamic(() => import('@/components/GiftView'), { ssr: false });
+const AdminView = dynamic(() => import('@/components/AdminView'), { ssr: false });
+const AdminLoginModal = dynamic(() => import('@/components/AdminLoginModal'), { ssr: false });
 
 export default function Home() {
   const [view, setView] = useState('main'); // 'main' | 'rsvp' | 'gift' | 'admin'

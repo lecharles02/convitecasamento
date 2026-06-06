@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useToast } from './ToastProvider';
 
@@ -265,72 +265,88 @@ export default function AdminView({ onClose }) {
     loadData();
   }
 
-  const filteredFamilies = {};
-  allGuests.forEach((guest) => {
-    const key = guest.search_key || 'sem-familia';
-    const matchesSearch = 
-      guest.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      key.toLowerCase().includes(searchTerm.toLowerCase());
-      
-    if (searchTerm === '' || matchesSearch) {
-      if (!filteredFamilies[key]) {
-        filteredFamilies[key] = [];
+  const filteredFamilies = useMemo(() => {
+    const families = {};
+    allGuests.forEach((guest) => {
+      const key = guest.search_key || 'sem-familia';
+      const matchesSearch = 
+        guest.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        key.toLowerCase().includes(searchTerm.toLowerCase());
+        
+      if (searchTerm === '' || matchesSearch) {
+        if (!families[key]) {
+          families[key] = [];
+        }
+        families[key].push(guest);
       }
-      filteredFamilies[key].push(guest);
-    }
-  });
+    });
 
-  emptyFamilies.forEach((key) => {
-    const matchesSearch = key.toLowerCase().includes(searchTerm.toLowerCase());
-    if (searchTerm === '' || matchesSearch) {
-      if (!filteredFamilies[key]) {
-        filteredFamilies[key] = [];
+    emptyFamilies.forEach((key) => {
+      const matchesSearch = key.toLowerCase().includes(searchTerm.toLowerCase());
+      if (searchTerm === '' || matchesSearch) {
+        if (!families[key]) {
+          families[key] = [];
+        }
       }
-    }
-  });
+    });
+    return families;
+  }, [allGuests, emptyFamilies, searchTerm]);
 
-  const familyList = Object.keys(filteredFamilies).sort();
+  const familyList = useMemo(() => {
+    return Object.keys(filteredFamilies).sort();
+  }, [filteredFamilies]);
   
-  const filteredFamilyList = familyList.filter(familyKey => {
-    const members = filteredFamilies[familyKey] || [];
-    if (statusFilter === 'all') return true;
-    if (statusFilter === 'empty') return members.length === 0;
-    if (statusFilter === 'confirmed') {
-      return members.length > 0 && members.some(m => m.confirmed);
-    }
-    if (statusFilter === 'pending') {
-      return members.length > 0 && members.some(m => !m.confirmed);
-    }
-    return true;
-  });
+  const filteredFamilyList = useMemo(() => {
+    return familyList.filter(familyKey => {
+      const members = filteredFamilies[familyKey] || [];
+      if (statusFilter === 'all') return true;
+      if (statusFilter === 'empty') return members.length === 0;
+      if (statusFilter === 'confirmed') {
+        return members.length > 0 && members.some(m => m.confirmed);
+      }
+      if (statusFilter === 'pending') {
+        return members.length > 0 && members.some(m => !m.confirmed);
+      }
+      return true;
+    });
+  }, [familyList, filteredFamilies, statusFilter]);
 
-  const pct = Math.min((totalMoney / 4500) * 100, 100).toFixed(1);
-  const moneyRemaining = Math.max(4500 - totalMoney, 0);
+  const pct = useMemo(() => {
+    return Math.min((totalMoney / 4500) * 100, 100).toFixed(1);
+  }, [totalMoney]);
 
-  const filteredGifts = receivedGifts.filter(gift => {
+  const moneyRemaining = useMemo(() => {
+    return Math.max(4500 - totalMoney, 0);
+  }, [totalMoney]);
+
+  const filteredGifts = useMemo(() => {
     const term = giftSearchTerm.toLowerCase();
-    return (
-      gift.gifter_name.toLowerCase().includes(term) ||
-      gift.item_name.toLowerCase().includes(term) ||
-      (gift.message && gift.message.toLowerCase().includes(term))
-    );
-  });
+    return receivedGifts.filter(gift => {
+      return (
+        gift.gifter_name.toLowerCase().includes(term) ||
+        gift.item_name.toLowerCase().includes(term) ||
+        (gift.message && gift.message.toLowerCase().includes(term))
+      );
+    });
+  }, [receivedGifts, giftSearchTerm]);
 
-  const sortedGifts = [...filteredGifts].sort((a, b) => {
-    if (giftSortBy === 'date_desc') {
-      return new Date(b.created_at) - new Date(a.created_at);
-    }
-    if (giftSortBy === 'date_asc') {
-      return new Date(a.created_at) - new Date(b.created_at);
-    }
-    if (giftSortBy === 'price_desc') {
-      return parseFloat(b.price) - parseFloat(a.price);
-    }
-    if (giftSortBy === 'price_asc') {
-      return parseFloat(a.price) - parseFloat(b.price);
-    }
-    return 0;
-  });
+  const sortedGifts = useMemo(() => {
+    return [...filteredGifts].sort((a, b) => {
+      if (giftSortBy === 'date_desc') {
+        return new Date(b.created_at) - new Date(a.created_at);
+      }
+      if (giftSortBy === 'date_asc') {
+        return new Date(a.created_at) - new Date(b.created_at);
+      }
+      if (giftSortBy === 'price_desc') {
+        return parseFloat(b.price) - parseFloat(a.price);
+      }
+      if (giftSortBy === 'price_asc') {
+        return parseFloat(a.price) - parseFloat(b.price);
+      }
+      return 0;
+    });
+  }, [filteredGifts, giftSortBy]);
 
   return (
     <div className="bg-stone-100 fixed inset-0 z-[70] overflow-y-auto slide-up-enter flex flex-col w-full h-full">
