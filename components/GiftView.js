@@ -695,8 +695,8 @@ export default function GiftView({ onClose }) {
       <div className="p-6 pb-24">
 
         <div className="text-center mb-6 mt-2">
-          <h1 className="font-serif text-2xl text-[#4A3B32] italic mb-2.5">Sua presença é o nosso maior presente</h1>
-          <p className="text-sm text-[#4A3B32]/75 leading-relaxed max-w-[310px] mx-auto font-medium">
+          <h1 className="font-serif text-2xl sm:text-3xl text-[#4A3B32] italic mb-2.5">Sua presença é o nosso maior presente</h1>
+          <p className="text-sm sm:text-base text-[#4A3B32]/75 leading-relaxed max-w-[340px] mx-auto font-medium">
             Como já moramos juntos, já temos a maior parte das coisas em nossa casa. Com a nossa mudança, precisamos apenas de alguns itens pontuais para o novo lar. Organizamos esta lista para sugerir cotas e presentes que realmente nos ajudarão nessa nova fase, evitando itens que já possuímos.
           </p>
         </div>
@@ -709,10 +709,10 @@ export default function GiftView({ onClose }) {
 
         {/* ── SECTION 2: COTAS PARA O LAR ── */}
         <SectionDivider icon="fa-home" label="Cotas para o Novo Lar" />
-        <p className="text-xs text-[#4A3B32]/80 text-center mb-2.5 max-w-[320px] mx-auto leading-relaxed font-medium">
+        <p className="text-sm sm:text-base text-[#4A3B32]/80 text-center mb-3 max-w-[360px] mx-auto leading-relaxed font-medium">
           As cotas são contribuições simbólicas em dinheiro (via Pix ou Cartão) que nos ajudam a equipar a nossa casa. Cada cota equivale a R$ 100,00.
         </p>
-        <p className="text-[11px] text-[#B65B46] font-bold text-center mb-5 uppercase tracking-wider">
+        <p className="text-xs text-[#B65B46] font-bold text-center mb-5 uppercase tracking-wider">
           Escolha quantas cotas deseja contribuir
         </p>
         <div className="grid grid-cols-1 gap-4 mb-2">
@@ -741,10 +741,10 @@ export default function GiftView({ onClose }) {
 
         {/* ── SECTION 4: PRODUTOS FÍSICOS (final) ── */}
         <SectionDivider icon="fa-box-open" label="Presentes Físicos" />
-        <p className="text-xs text-[#4A3B32]/80 text-center mb-2.5 max-w-[320px] mx-auto leading-relaxed font-medium">
-          Prefere dar um presente físico tradicional? Escolha um item abaixo para comprar na loja de sua preferência e nos entregar pessoalmente ou marcar como escolhido para reservar o item.
+        <p className="text-sm sm:text-base text-[#4A3B32]/80 text-center mb-3 max-w-[360px] mx-auto leading-relaxed font-medium">
+          Prefere nos dar um presente físico tradicional? Escolha um item abaixo e <strong>marque-o como escolhido</strong> para reservá-lo (isso é essencial para evitar presentes repetidos). Depois, você pode comprá-lo na loja de sua preferência e nos entregar pessoalmente.
         </p>
-        <p className="text-[11px] text-[#B65B46] font-bold text-center mb-5 uppercase tracking-wider">
+        <p className="text-xs text-[#B65B46] font-bold text-center mb-5 uppercase tracking-wider">
           Os itens já escolhidos aparecem marcados
         </p>
         <div className="grid grid-cols-1 gap-3">
