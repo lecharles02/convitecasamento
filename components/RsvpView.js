@@ -204,7 +204,7 @@ function StepFamily({ family, onSuccess }) {
       {/* Custom Confirmation Modal */}
       {cancelConfirmGuest && typeof window !== 'undefined' && createPortal(
         <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 shadow-2xl w-full max-w-sm text-center border border-[#B65B46]/10 space-y-4 slide-up-enter">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl w-[92vw] max-w-[360px] sm:max-w-sm text-center border border-[#B65B46]/10 space-y-4 slide-up-enter overflow-hidden">
             <div className="w-16 h-16 bg-[#B65B46]/10 rounded-full flex items-center justify-center mx-auto text-[#B65B46]">
               <i className="fa-solid fa-circle-exclamation text-2xl" />
             </div>

@@ -39,7 +39,7 @@ export default function AdminLoginModal({ onSuccess, onClose }) {
 
   return createPortal(
     <div className="fixed inset-0 z-[80] bg-black/60 backdrop-blur-sm flex items-center justify-center px-4">
-      <div className="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl relative slide-up-enter">
+      <div className="bg-white w-[92vw] max-w-[360px] sm:max-w-sm rounded-3xl p-6 sm:p-8 shadow-2xl relative slide-up-enter overflow-hidden">
         <button onClick={onClose} className="absolute top-4 right-4 text-[#4A3B32]/50 hover:text-[#4A3B32]">
           <i className="fa-solid fa-xmark" />
         </button>

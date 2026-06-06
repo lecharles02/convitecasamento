@@ -334,12 +334,12 @@ function PaymentModal({ item, onClose, onSuccess }) {
   if (typeof window === 'undefined') return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-end justify-center sm:items-center">
-      <div className="bg-[#FAF6F0] w-full max-w-[420px] rounded-t-3xl sm:rounded-3xl flex flex-col max-h-[92vh] shadow-2xl relative overflow-hidden">
+    <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-[#FAF6F0] w-full sm:w-[92vw] max-w-[420px] rounded-3xl flex flex-col max-h-[90vh] shadow-2xl relative overflow-hidden">
 
         {/* Close Confirm */}
         {showCloseConfirm && (
-          <div className="absolute inset-0 z-[70] bg-[#FAF6F0]/95 backdrop-blur-md flex flex-col items-center justify-center p-8 text-center">
+          <div className="absolute inset-0 z-[70] bg-[#FAF6F0]/95 backdrop-blur-md flex flex-col items-center justify-center p-6 sm:p-8 text-center overflow-hidden">
             <i className="fa-solid fa-triangle-exclamation text-5xl text-[#B65B46] mb-4" />
             <h4 className="font-serif text-2xl text-[#4A3B32] mb-2.5 italic">Cancelar presente?</h4>
             <p className="text-xs sm:text-sm text-[#4A3B32]/85 mb-8 leading-relaxed max-w-[280px]">
@@ -354,7 +354,7 @@ function PaymentModal({ item, onClose, onSuccess }) {
 
         {/* Physical Confirm Popup */}
         {showPhysicalConfirm && (
-          <div className="absolute inset-0 z-[70] bg-[#FAF6F0]/95 backdrop-blur-md flex flex-col items-center justify-center p-8 text-center">
+          <div className="absolute inset-0 z-[70] bg-[#FAF6F0]/95 backdrop-blur-md flex flex-col items-center justify-center p-6 sm:p-8 text-center overflow-hidden">
             <div className="w-16 h-16 bg-[#B65B46]/10 rounded-full flex items-center justify-center mx-auto text-[#B65B46] mb-4">
               <i className="fa-solid fa-gift text-2xl" />
             </div>
@@ -392,7 +392,7 @@ function PaymentModal({ item, onClose, onSuccess }) {
           </button>
         </div>
 
-        <div className="p-6 overflow-y-auto">
+        <div className="p-5 sm:p-6 overflow-y-auto overflow-x-hidden">
           {/* Item summary */}
           <div className="bg-white border border-[#B65B46]/20 rounded-2xl p-4.5 mb-6 flex justify-between items-center shadow-sm">
             <div className="flex-1 min-w-0 pr-3">
@@ -514,7 +514,7 @@ function PaymentModal({ item, onClose, onSuccess }) {
                   <img src="/pix_qrcode.png" alt="QR Code PIX" className="w-full h-full object-contain rounded-lg" />
                 </div>
                 <div className="bg-stone-100 rounded-2xl p-4 flex flex-col items-center gap-2.5 mb-4 border border-stone-200">
-                  <span className="text-base font-mono font-bold text-[#4A3B32] tracking-wider select-all">64587589000159</span>
+                  <span className="text-base sm:text-lg font-mono font-bold text-[#4A3B32] tracking-wider select-all break-all">64587589000159</span>
                   <button onClick={copyPix} className="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/50 px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors w-full max-w-[150px]">
                     Copiar Chave
                   </button>
