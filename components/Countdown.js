@@ -5,7 +5,7 @@ import React from 'react';
 
 const Unit = React.memo(({ value, label }) => (
   <div className="flex flex-col items-center">
-    <span className="text-5xl font-pt-serif font-light text-[#4A3B32] mb-1.5">{value}</span>
+    <span className="text-5xl font-serif font-light text-[#4A3B32] mb-1.5">{value}</span>
     <span className="text-xs uppercase tracking-[0.25em] text-[#4A3B32]/75 font-medium">{label}</span>
   </div>
 ));

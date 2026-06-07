@@ -59,11 +59,11 @@ export default function HeroSection({ onOpenRsvp, onOpenGift }) {
 
           <div className="bg-black/22 backdrop-blur-md border border-white/12 rounded-2xl px-6 py-3 flex flex-col items-center gap-2 w-full max-w-[280px] shadow-lg">
             <div className="flex items-center gap-3 text-white text-base tracking-[0.2em] font-light drop-shadow-sm">
-              <span className="font-pt-serif">23</span>
+              <span className="font-serif">23</span>
               <span className="text-[#B65B46] text-sm font-serif">•</span>
               <span className="font-serif">Agosto</span>
               <span className="text-[#B65B46] text-sm font-serif">•</span>
-              <span className="font-pt-serif">2026</span>
+              <span className="font-serif">2026</span>
             </div>
             <div className="w-full h-px bg-white/10" />
             <div className="uppercase tracking-[0.25em] text-xs text-[#D48C79] font-semibold drop-shadow-sm flex items-center justify-center gap-1.5">

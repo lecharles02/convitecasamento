@@ -1,5 +1,5 @@
 import './globals.css';
-import { Montserrat, Playfair_Display, PT_Serif, Great_Vibes } from 'next/font/google';
+import { Montserrat, Playfair_Display, Great_Vibes } from 'next/font/google';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -13,14 +13,6 @@ const playfairDisplay = Playfair_Display({
   weight: ['400', '600'],
   style: ['normal', 'italic'],
   variable: '--font-playfair-display',
-  display: 'swap',
-});
-
-const ptSerif = PT_Serif({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  style: ['normal', 'italic'],
-  variable: '--font-pt-serif',
   display: 'swap',
 });
 
@@ -49,7 +41,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt-BR" className={`${montserrat.variable} ${playfairDisplay.variable} ${ptSerif.variable} ${greatVibes.variable}`}>
+    <html lang="pt-BR" className={`${montserrat.variable} ${playfairDisplay.variable} ${greatVibes.variable}`}>
       <head>
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
         <link rel="preload" as="image" href="/background.webp" />
