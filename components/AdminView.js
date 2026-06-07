@@ -36,6 +36,28 @@ export default function AdminView({ onClose }) {
   
   const showToast = useToast();
 
+  const loadData = useCallback(async () => {
+    const { data: guests } = await supabase
+      .from('guests')
+      .select('*')
+      .order('search_key', { ascending: true })
+      .order('name', { ascending: true });
+      
+    const { data: gifts } = await supabase
+      .from('gifts')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (guests) {
+      setAllGuests(guests);
+      setConfirmedGuests(guests.filter(g => g.confirmed));
+    }
+    if (gifts) {
+      setReceivedGifts(gifts);
+      setTotalMoney(gifts.reduce((a, b) => a + parseFloat(b.price), 0));
+    }
+  }, []);
+
   useEffect(() => { loadData(); }, [loadData]);
 
   const addEmptyFamily = useCallback(() => {
@@ -72,21 +94,6 @@ export default function AdminView({ onClose }) {
     }));
   }, []);
 
-  const expandAllFamilies = useCallback(() => {
-    const next = {};
-    familyList.forEach(key => {
-      next[key] = false;
-    });
-    setCollapsedFamilies(next);
-  }, [familyList]);
-
-  const collapseAllFamilies = useCallback(() => {
-    const next = {};
-    familyList.forEach(key => {
-      next[key] = true;
-    });
-    setCollapsedFamilies(next);
-  }, [familyList]);
 
   const saveInlineGuest = useCallback(async (familyKey) => {
     if (!inlineGuestName.trim()) {
@@ -108,28 +115,6 @@ export default function AdminView({ onClose }) {
       loadData();
     }
   }, [inlineGuestName, loadData, showToast]);
-
-  const loadData = useCallback(async () => {
-    const { data: guests } = await supabase
-      .from('guests')
-      .select('*')
-      .order('search_key', { ascending: true })
-      .order('name', { ascending: true });
-      
-    const { data: gifts } = await supabase
-      .from('gifts')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (guests) {
-      setAllGuests(guests);
-      setConfirmedGuests(guests.filter(g => g.confirmed));
-    }
-    if (gifts) {
-      setReceivedGifts(gifts);
-      setTotalMoney(gifts.reduce((a, b) => a + parseFloat(b.price), 0));
-    }
-  }, []);
 
   const saveEditGuest = useCallback(async (id) => {
     if (!editName.trim() || !editSearchKey.trim()) {
@@ -314,6 +299,22 @@ export default function AdminView({ onClose }) {
       return true;
     });
   }, [familyList, filteredFamilies, statusFilter]);
+
+  const expandAllFamilies = useCallback(() => {
+    const next = {};
+    familyList.forEach(key => {
+      next[key] = false;
+    });
+    setCollapsedFamilies(next);
+  }, [familyList]);
+
+  const collapseAllFamilies = useCallback(() => {
+    const next = {};
+    familyList.forEach(key => {
+      next[key] = true;
+    });
+    setCollapsedFamilies(next);
+  }, [familyList]);
 
   const pct = useMemo(() => {
     return Math.min((totalMoney / 4500) * 100, 100).toFixed(1);

@@ -51,9 +51,33 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR" className={`${montserrat.variable} ${playfairDisplay.variable} ${ptSerif.variable} ${greatVibes.variable}`}>
       <head>
+        <link rel="preload" as="image" href="/background.webp" />
+        <link
+          rel="preload"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          as="style"
+        />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          media="print"
+          id="font-awesome-css"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var lnk = document.getElementById('font-awesome-css');
+                if (lnk) {
+                  if (lnk.sheet) {
+                    lnk.media = 'all';
+                  } else {
+                    lnk.addEventListener('load', function() { this.media = 'all'; });
+                  }
+                }
+              } catch (e) {}
+            `
+          }}
         />
       </head>
       <body className="bg-stone-200 selection:bg-[#B65B46] selection:text-white">

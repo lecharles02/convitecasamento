@@ -172,9 +172,9 @@ const QuotaCard = React.memo(({ item, quotasBought, onSelect }) => {
   
           <button
             onClick={() => onSelect({ ...item, type: 'quota' })}
-            className="w-full bg-[#B65B46] text-white uppercase tracking-widest text-xs font-bold py-4 rounded-xl hover:bg-[#D48C79] transition-colors shadow-sm"
+            className="w-full bg-[#B65B46] text-white uppercase tracking-widest text-xs font-bold py-4 rounded-xl hover:bg-[#D48C79] transition-colors shadow-sm cursor-pointer"
           >
-            Contribuir — {fmt(item.price)} por cota
+            Comprar Cota de Presente
           </button>
         </div>
     </div>
@@ -767,9 +767,23 @@ export default function GiftView({ onClose }) {
 
         <div className="text-center mb-6 mt-2">
           <h1 className="font-serif text-2xl sm:text-3xl text-[#4A3B32] italic mb-2.5">Sua presença é o nosso maior presente</h1>
-          <p className="text-sm sm:text-base text-[#4A3B32]/75 leading-relaxed max-w-[340px] mx-auto font-medium">
-            Como já moramos juntos, já temos a maior parte das coisas em nossa casa. Com a nossa mudança, precisamos apenas de alguns itens pontuais para o novo lar. Organizamos esta lista para sugerir cotas e presentes que realmente nos ajudarão nessa nova fase, evitando itens que já possuímos.
+          <p className="text-sm sm:text-base text-[#4A3B32]/75 leading-relaxed max-w-[340px] mx-auto font-medium mb-4">
+            Como já moramos juntos, já temos grande parte do que precisamos para nossa casa. Para facilitar, separamos nossa lista em 3 opções para você ficar à vontade:
           </p>
+          <div className="flex flex-col gap-2 max-w-[340px] mx-auto text-left text-sm text-[#4A3B32]/80 font-medium">
+            <div className="bg-white/60 p-3 rounded-xl shadow-sm border border-[#B65B46]/10 flex gap-3 items-center">
+              <i className="fa-solid fa-plane text-[#B65B46] text-lg w-6 text-center" />
+              <span><strong>Lua de Mel:</strong> Contribua com qualquer valor que desejar.</span>
+            </div>
+            <div className="bg-white/60 p-3 rounded-xl shadow-sm border border-[#B65B46]/10 flex gap-3 items-center">
+              <i className="fa-solid fa-home text-[#B65B46] text-lg w-6 text-center" />
+              <span><strong>Cotas:</strong> Ajude a comprar itens mais caros adquirindo cotas (R$ 100 cada).</span>
+            </div>
+            <div className="bg-white/60 p-3 rounded-xl shadow-sm border border-[#B65B46]/10 flex gap-3 items-center">
+              <i className="fa-solid fa-box-open text-[#B65B46] text-lg w-6 text-center" />
+              <span><strong>Físicos:</strong> Escolha e reserve um item para nos entregar.</span>
+            </div>
+          </div>
         </div>
 
         {/* ── SECTION 1: LUA DE MEL (hero — emocional, valor livre) ── */}
@@ -781,10 +795,10 @@ export default function GiftView({ onClose }) {
         {/* ── SECTION 2: COTAS PARA O LAR ── */}
         <SectionDivider icon="fa-home" label="Cotas para o Novo Lar" />
         <p className="text-sm sm:text-base text-[#4A3B32]/80 text-center mb-3 max-w-[360px] mx-auto leading-relaxed font-medium">
-          As cotas são contribuições simbólicas em dinheiro (via Pix ou Cartão) que nos ajudam a equipar a nossa casa. Cada cota equivale a R$ 100,00.
+          As cotas são contribuições em dinheiro que nos ajudam a equipar a nossa casa. O valor é de R$ 100,00 por cota.
         </p>
         <p className="text-xs text-[#B65B46] font-bold text-center mb-5 uppercase tracking-wider">
-          Escolha quantas cotas deseja contribuir
+          Escolha quantas cotas deseja comprar
         </p>
         <div className="grid grid-cols-1 gap-4 mb-2">
           {QUOTA_ITEMS.map((item) => (

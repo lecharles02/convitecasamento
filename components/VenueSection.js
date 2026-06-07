@@ -1,4 +1,9 @@
+'use client';
+import { useState } from 'react';
+
 export default function VenueSection() {
+  const [showMap1, setShowMap1] = useState(false);
+  const [showMap2, setShowMap2] = useState(false);
   return (
     <section className="py-10 px-6 relative">
       <div className="flex flex-col gap-12 relative z-10">
@@ -21,20 +26,32 @@ export default function VenueSection() {
             </svg>
             <p className="font-bold text-sm text-[#4A3B32] tracking-[0.15em] uppercase">Basílica de N. Sra. da Penha</p>
 
-            <div className="w-full mt-5 mb-4 rounded-2xl overflow-hidden border border-[#E9A088]/25 bg-stone-50 relative group shadow-[0_12px_28px_rgba(74,59,50,0.22),_0_5px_10px_rgba(0,0,0,0.08)] hover:translate-y-[-3px] hover:shadow-[0_20px_38px_rgba(74,59,50,0.32)] transition-all duration-300">
-              <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm z-10 border border-[#D48C79]/20">
-                <span className="text-xs uppercase tracking-wider text-[#4A3B32] font-bold">Ver no Maps</span>
-              </div>
-              <iframe
-                src="https://maps.google.com/maps?q=Bas%C3%ADlica+de+Nossa+Senhora+da+Penha,+Largo+da+Penha,+19&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                width="100%"
-                height="140"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="grayscale-[20%] contrast-[95%] opacity-90 transition-opacity group-hover:opacity-100 object-cover"
-              />
+            <div className="w-full mt-5 mb-4 rounded-2xl overflow-hidden border border-[#E9A088]/25 bg-stone-50 relative group shadow-[0_12px_28px_rgba(74,59,50,0.22),_0_5px_10px_rgba(0,0,0,0.08)] hover:translate-y-[-3px] hover:shadow-[0_20px_38px_rgba(74,59,50,0.32)] transition-all duration-300 h-[140px]">
+              {showMap1 ? (
+                <iframe
+                  src="https://maps.google.com/maps?q=Bas%C3%ADlica+de+Nossa+Senhora+da+Penha,+Largo+da+Penha,+19&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="140"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="grayscale-[20%] contrast-[95%] opacity-90 transition-opacity group-hover:opacity-100 object-cover"
+                />
+              ) : (
+                <button
+                  onClick={() => setShowMap1(true)}
+                  className="w-full h-full flex flex-col items-center justify-center bg-stone-100 hover:bg-[#FAF6F0] transition-colors duration-300 gap-2 px-4 group"
+                  aria-label="Carregar mapa da Basílica de Nossa Senhora da Penha"
+                >
+                  <div className="w-10 h-10 rounded-full bg-[#FAF6F0] group-hover:bg-[#B65B46]/10 flex items-center justify-center border border-[#D48C79]/30 shadow-sm transition-all duration-300">
+                    <i className="fa-solid fa-map-location-dot text-[#D48C79] group-hover:text-[#B65B46] text-lg transition-colors duration-300" />
+                  </div>
+                  <span className="text-xs uppercase font-semibold text-[#4A3B32]/70 group-hover:text-[#B65B46] tracking-wider transition-colors duration-300">
+                    Carregar Mapa Interativo
+                  </span>
+                </button>
+              )}
             </div>
 
             <p className="text-xs text-[#4A3B32]/75 leading-relaxed uppercase tracking-widest px-2">
@@ -83,20 +100,32 @@ export default function VenueSection() {
 
             <p className="font-bold text-sm text-[#4A3B32] tracking-[0.15em] uppercase">Espaço Encaza</p>
 
-            <div className="w-full mt-4 mb-4 rounded-2xl overflow-hidden border border-[#E9A088]/25 bg-stone-50 relative group shadow-[0_12px_28px_rgba(74,59,50,0.22),_0_5px_10px_rgba(0,0,0,0.08)] hover:translate-y-[-3px] hover:shadow-[0_20px_38px_rgba(74,59,50,0.32)] transition-all duration-300">
-              <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm z-10 border border-[#D48C79]/20">
-                <span className="text-xs uppercase tracking-wider text-[#4A3B32] font-bold">Ver no Maps</span>
-              </div>
-              <iframe
-                src="https://maps.google.com/maps?q=Rua+Tom%C3%A1s+Ribeiro,+15+Penha+Rio+de+Janeiro&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                width="100%"
-                height="140"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="grayscale-[20%] contrast-[95%] opacity-90 transition-opacity group-hover:opacity-100 object-cover"
-              />
+            <div className="w-full mt-4 mb-4 rounded-2xl overflow-hidden border border-[#E9A088]/25 bg-stone-50 relative group shadow-[0_12px_28px_rgba(74,59,50,0.22),_0_5px_10px_rgba(0,0,0,0.08)] hover:translate-y-[-3px] hover:shadow-[0_20px_38px_rgba(74,59,50,0.32)] transition-all duration-300 h-[140px]">
+              {showMap2 ? (
+                <iframe
+                  src="https://maps.google.com/maps?q=Rua+Tom%C3%A1s+Ribeiro,+15+Penha+Rio+de+Janeiro&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="140"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="grayscale-[20%] contrast-[95%] opacity-90 transition-opacity group-hover:opacity-100 object-cover"
+                />
+              ) : (
+                <button
+                  onClick={() => setShowMap2(true)}
+                  className="w-full h-full flex flex-col items-center justify-center bg-stone-100 hover:bg-[#FAF6F0] transition-colors duration-300 gap-2 px-4 group"
+                  aria-label="Carregar mapa do Espaço Encaza"
+                >
+                  <div className="w-10 h-10 rounded-full bg-[#FAF6F0] group-hover:bg-[#B65B46]/10 flex items-center justify-center border border-[#D48C79]/30 shadow-sm transition-all duration-300">
+                    <i className="fa-solid fa-map-location-dot text-[#D48C79] group-hover:text-[#B65B46] text-lg transition-colors duration-300" />
+                  </div>
+                  <span className="text-xs uppercase font-semibold text-[#4A3B32]/70 group-hover:text-[#B65B46] tracking-wider transition-colors duration-300">
+                    Carregar Mapa Interativo
+                  </span>
+                </button>
+              )}
             </div>
 
             <p className="text-xs text-[#4A3B32]/75 leading-relaxed mb-6 uppercase tracking-widest px-2">
