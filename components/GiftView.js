@@ -1,11 +1,12 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { supabase } from '@/lib/supabase';
 import { useToast } from './ToastProvider';
+import Image from 'next/image';
 
 // ─── SAFE IMAGE WITH ICON FALLBACK ──────────────────────────────────────────
-const SafeImage = React.memo(({ src, alt, icon, className, iconColor = 'text-[#B65B46]/60', iconSize = 'text-2xl' }) => {
+const SafeImage = React.memo(({ src, alt, icon, className, style, iconColor = 'text-[#B65B46]/60', iconSize = 'text-2xl' }) => {
   const [error, setError] = useState(false);
 
   if (error || !src) {
@@ -17,11 +18,13 @@ const SafeImage = React.memo(({ src, alt, icon, className, iconColor = 'text-[#B
   }
 
   return (
-    <img
+    <Image
       src={src}
       alt={alt}
-      className={className}
-      loading="lazy"
+      fill
+      className={`object-cover ${className}`}
+      style={style}
+      sizes="(max-width: 768px) 100vw, 33vw"
       onError={() => setError(true)}
     />
   );
@@ -30,31 +33,31 @@ SafeImage.displayName = 'SafeImage';
 
 // ─── PHYSICAL ITEMS ──────────────────────────────────────────────────────────
 const PHYSICAL_ITEMS = [
-  { id: 'torradeira',       name: 'Torradeira / Misto Quente',       icon: 'fa-bread-slice',    image: '/gifts/torradeira.png' },
-  { id: 'forno-eletrico',   name: 'Forno Elétrico',                  icon: 'fa-fire-burner',    image: '/gifts/forno-eletrico.png' },
-  { id: 'cafeteira',        name: 'Cafeteira',                       icon: 'fa-mug-hot',        image: '/gifts/cafeteira.png' },
-  { id: 'panela-eletrica',  name: 'Panela Elétrica',                 icon: 'fa-bowl-food',      image: '/gifts/panela-eletrica.png' },
-  { id: 'frigideira',       name: 'Frigideira Antiaderente',         icon: 'fa-kitchen-set',    image: '/gifts/frigideira.png' },
-  { id: 'potes-hermeticos', name: 'Conjunto de Potes Herméticos',    icon: 'fa-boxes-stacked',  image: '/gifts/potes-hermeticos.png' },
-  { id: 'porta-condimento', name: 'Porta Condimento Giratório',      icon: 'fa-arrows-spin',    image: '/gifts/porta-condimento.png' },
-  { id: 'robo-aspirador',   name: 'Robô Aspirador',                  icon: 'fa-robot',          image: '/gifts/robo-aspirador.png' },
-  { id: 'jogo-cama',        name: 'Jogo de Cama (King)',             icon: 'fa-bed',            image: '/gifts/jogo-cama.png' },
-  { id: 'jogo-toalha',      name: 'Jogo de Toalha',                  icon: 'fa-shower',         image: '/gifts/jogo-toalha.png' },
-  { id: 'manta-sofa',       name: 'Manta para Sofá',                 icon: 'fa-couch',          image: '/gifts/manta-sofa.png' },
-  { id: 'abajour',          name: 'Abajour',                         icon: 'fa-lightbulb',      image: '/gifts/abajour.png' },
-  { id: 'ventilador',       name: 'Ventilador de Chão',              icon: 'fa-fan',            image: '/gifts/ventilador.png' },
+  { id: 'torradeira',       name: 'Torradeira / Misto Quente',       icon: 'fa-bread-slice',    image: '/SANDUICHEIRA.webp' },
+  { id: 'forno-eletrico',   name: 'Forno Elétrico',                  icon: 'fa-fire-burner',    image: '/FORNO ELETRICO.webp' },
+  { id: 'cafeteira',        name: 'Cafeteira',                       icon: 'fa-mug-hot',        image: '/CAFETEIRA.webp' },
+  { id: 'panela-eletrica',  name: 'Panela Elétrica',                 icon: 'fa-bowl-food',      image: '/PANELA ELETRICA.webp' },
+  { id: 'frigideira',       name: 'Frigideira Antiaderente',         icon: 'fa-kitchen-set',    image: '/FRIGIDEIRA ANTIADERENTE.webp' },
+  { id: 'potes-hermeticos', name: 'Conjunto de Potes Herméticos',    icon: 'fa-boxes-stacked',  image: '/POTE HERMETICOS 2.webp' },
+  { id: 'porta-condimento', name: 'Porta Condimento Giratório',      icon: 'fa-arrows-spin',    image: '/PORTA TEMPEIRO GIRATORIO.webp' },
+  { id: 'robo-aspirador',   name: 'Robô Aspirador',                  icon: 'fa-robot',          image: '/ROBO ASPIRADOR.webp' },
+  { id: 'jogo-cama',        name: 'Jogo de Cama (King)',             icon: 'fa-bed',            image: '/JOGO DE CAMA KING SIZE.webp' },
+  { id: 'jogo-toalha',      name: 'Jogo de Toalha',                  icon: 'fa-shower',         image: '/JOGO DE TOALHA 2.webp' },
+  { id: 'manta-sofa',       name: 'Manta para Sofá',                 icon: 'fa-couch',          image: '/MANTA PARA SOFÁ.webp' },
+  { id: 'abajour',          name: 'Abajour',                         icon: 'fa-lightbulb',      image: '/ABAJUR 2.webp' },
+  { id: 'ventilador',       name: 'Ventilador de Chão',              icon: 'fa-fan',            image: '/VENTILADOR DE CHÃO.webp', position: 'center 20%' },
 ];
 
 // ─── QUOTA ITEMS ─────────────────────────────────────────────────────────────
 const QUOTA_ITEMS = [
-  { id: 'geladeira',       name: 'Geladeira Nova',       icon: 'fa-snowflake',    price: 100, image: '/gifts/geladeira.png',     description: 'Ajude a refrigerar nosso novo lar com amor ❄️' },
-  { id: 'guarda-roupa',    name: 'Guarda-Roupa',         icon: 'fa-shirt',        price: 100, image: '/gifts/guarda-roupa.png',   description: 'Para organizar tudo com estilo no novo apartamento 👗' },
-  { id: 'armario-cozinha', name: 'Armário de Cozinha',   icon: 'fa-door-closed',  price: 100, image: '/gifts/armario-cozinha.png', description: 'Panelas, mantimentos e muita organização 🍳' },
+  { id: 'geladeira',       name: 'Geladeira Nova',       icon: 'fa-snowflake',    price: 100, image: '/GELADEIRA.webp',     description: 'Ajude a refrigerar nosso novo lar com amor ❄️' },
+  { id: 'guarda-roupa',    name: 'Guarda-Roupa',         icon: 'fa-shirt',        price: 100, image: '/GUARDA ROUPA 2.webp',   description: 'Para organizar tudo com estilo no novo apartamento 👗' },
+  { id: 'armario-cozinha', name: 'Armário de Cozinha',   icon: 'fa-door-closed',  price: 100, image: '/ARMARIO DE COZINHA.avif', description: 'Panelas, mantimentos e muita organização 🍳' },
 ];
 
 // ─── FUN / SPECIAL ───────────────────────────────────────────────────────────
 const FUN_ITEMS = [
-  { id: 'buque-direto', name: 'Taxa do Buquê Direto em Você', icon: 'fa-hand-holding-heart', price: 80, image: '/gifts/buque-direto.png', description: 'Garanta que o buquê venha certinho na sua direção! 💐', multi: true },
+  { id: 'buque-direto', name: 'Taxa do Buquê Direto em Você', icon: 'fa-hand-holding-heart', price: 80, image: '/JOGADA-DE-BUQUE.webp', description: 'Garanta que o buquê venha certinho na sua direção! 💐', multi: true },
 ];
 
 // ─── HONEYMOON ───────────────────────────────────────────────────────────────
@@ -100,6 +103,7 @@ const PhysicalCard = React.memo(({ item, claimedBy, onSelect }) => {
             alt={item.name}
             icon={item.icon}
             className="w-full h-full object-cover"
+            style={item.position ? { objectPosition: item.position } : undefined}
             iconColor="text-[#B65B46]/60"
             iconSize="text-2xl"
           />
@@ -116,7 +120,15 @@ const PhysicalCard = React.memo(({ item, claimedBy, onSelect }) => {
               {claimedBy}
             </p>
           ) : (
-            <p className="text-xs text-[#4A3B32]/60 font-medium">Disponível • Toque para presentear</p>
+            <div className="flex flex-col gap-0.5">
+              <span className="text-sm text-emerald-600 font-bold flex items-center gap-1.5">
+                <i className="fa-solid fa-circle text-[7px] text-emerald-500 animate-pulse" />
+                Disponível
+              </span>
+              <span className="text-xs text-[#4A3B32]/60 font-medium pl-[13px]">
+                Toque para reservar
+              </span>
+            </div>
           )}
         </div>
 
@@ -140,28 +152,23 @@ const QuotaCard = React.memo(({ item, quotasBought, onSelect }) => {
   return (
     <div className="rounded-2xl overflow-hidden border border-[#B65B46]/10 bg-white hover:border-[#B65B46]/30 hover:shadow-md transition-all duration-300">
       {/* Top image strip */}
-      <div className="relative h-28 overflow-hidden">
+      <div className="relative h-44 overflow-hidden">
         <SafeImage
           src={item.image}
           alt={item.name}
           icon={item.icon}
           className="w-full h-full object-cover"
+          style={item.position ? { objectPosition: item.position } : undefined}
           iconColor="text-[#B65B46]"
           iconSize="text-4xl"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-white/80 to-transparent" />
       </div>
 
       <div className="p-5">
           <h4 className="font-bold text-[#4A3B32] text-sm mb-1">{item.name}</h4>
           <p className="text-xs text-[#4A3B32]/60 mb-4 leading-relaxed">{item.description}</p>
   
-          {quotasBought > 0 && (
-            <p className="text-xs text-[#B65B46] font-bold mb-4 flex items-center gap-1">
-              <i className="fa-solid fa-heart text-[10px]" />
-              {quotasBought} {quotasBought === 1 ? 'pessoa contribuiu' : 'pessoas contribuíram'}
-            </p>
-          )}
+
   
           <button
             onClick={() => onSelect({ ...item, type: 'quota' })}
@@ -189,6 +196,7 @@ const FunCard = React.memo(({ item, count, onSelect }) => {
             alt={item.name}
             icon={item.icon}
             className="w-full h-full object-cover"
+            style={item.position ? { objectPosition: item.position } : undefined}
             iconColor="text-[#C5A059]"
             iconSize="text-xl"
           />
@@ -196,11 +204,7 @@ const FunCard = React.memo(({ item, count, onSelect }) => {
         <div className="flex-1 min-w-0">
           <h4 className="font-bold text-[#4A3B32] text-sm leading-tight mb-1">{item.name}</h4>
           <p className="text-xs text-[#4A3B32]/60 leading-normal mb-1.5">{item.description}</p>
-          {count > 0 && (
-            <span className="text-xs text-[#C5A059] font-bold flex items-center gap-1">
-              <i className="fa-solid fa-users text-[10px]" />{count} {count === 1 ? 'pessoa participou' : 'pessoas participaram'}
-            </span>
-          )}
+
         </div>
         <div className="shrink-0 text-right">
           <p className="text-[#B65B46] font-bold text-sm">{fmt(item.price)}</p>
@@ -243,13 +247,8 @@ const HoneymoonCard = React.memo(({ collected, onSelect }) => {
         <p className="text-xs text-white/90 leading-relaxed mb-5 max-w-[280px]">
           {HONEYMOON.description}
         </p>
-        {collected > 0 && (
-          <p className="text-xs text-white/70 mb-4 flex items-center gap-1.5">
-            <i className="fa-solid fa-heart text-[10px]" />
-            Já arrecadamos {fmt(collected)} para nossa viagem!
-          </p>
-        )}
-        <div className="bg-white/20 backdrop-blur border border-white/30 text-white uppercase tracking-widest text-xs font-bold py-3.5 px-8 rounded-full hover:bg-white/30 transition-colors w-full max-w-[250px]">
+
+        <div className="bg-white text-[#4A3B32] uppercase tracking-widest text-[10px] sm:text-xs font-bold py-3.5 px-8 rounded-full shadow-lg hover:bg-stone-100 transition-all duration-300 w-full max-w-[250px]">
           Contribuir com qualquer valor
         </div>
       </div>
@@ -269,6 +268,7 @@ function PaymentModal({ item, onClose, onSuccess }) {
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
   const [showPhysicalConfirm, setShowPhysicalConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('pix');
   const showToast = useToast();
 
   const isCustom = item.isCustom || item.type === 'honeymoon';
@@ -330,6 +330,43 @@ function PaymentModal({ item, onClose, onSuccess }) {
       setLoading(false);
     }
   }
+
+  async function handleCardPayment() {
+    setLoading(true);
+    try {
+      const itemName = isQuota ? `${item.name} (${quotaQty}x cota)` : item.name;
+      const res = await fetch('/api/checkout/infinitepay', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          price: basePrice,
+          itemName: itemName,
+          origin: window.location.origin,
+        }),
+      });
+      const data = await res.json();
+      
+      if (!res.ok || !data.success || !data.url) {
+        throw new Error(data.error || 'Erro ao gerar link de pagamento.');
+      }
+
+      const payload = {
+        gifter_name: name.trim(),
+        item_name: itemName,
+        price: basePrice,
+        message: message.trim() || null,
+      };
+      const { error } = await supabase.from('gifts').insert([payload]);
+      if (error) throw error;
+
+      window.location.href = data.url;
+    } catch (err) {
+      console.error(err);
+      showToast(err.message || 'Erro ao preparar pagamento. Tente novamente.');
+      setLoading(false);
+    }
+  }
+
 
   if (typeof window === 'undefined') return null;
 
@@ -451,7 +488,7 @@ function PaymentModal({ item, onClose, onSuccess }) {
                     type="number"
                     value={customPrice}
                     onChange={(e) => setCustomPrice(e.target.value)}
-                    placeholder="Ex: 200"
+                    placeholder=""
                     className="w-full bg-white border border-[#B65B46]/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#B65B46]"
                   />
                 </div>
@@ -499,47 +536,74 @@ function PaymentModal({ item, onClose, onSuccess }) {
 
           {/* Payment Step */}
           {step === 'payment' && (
-            <div className="flex flex-col gap-5">
-              <p className="text-sm text-center text-[#4A3B32]/85 leading-relaxed">
+            <div className="flex flex-col gap-4">
+              <p className="text-xs sm:text-sm text-center text-[#4A3B32]/85 leading-relaxed">
                 Obrigado, <span className="font-bold">{name}</span>! Escolha como prefere nos presentear:
               </p>
 
-              {/* PIX */}
-              <div className="bg-white border-2 border-emerald-500/20 rounded-2xl p-5 text-center relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-emerald-50" />
-                <i className="fa-brands fa-pix text-3xl text-emerald-500 mb-2" />
-                <h4 className="font-bold text-[#4A3B32] mb-1 text-sm">Chave PIX (CNPJ)</h4>
-                <p className="text-xs text-[#4A3B32]/70 mb-4">Aponte a câmera do seu banco para o QR Code ou copie a chave.</p>
-                <div className="w-44 h-44 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 border border-stone-200/80 p-2 shadow-sm">
-                  <img src="/pix_qrcode.png" alt="QR Code PIX" className="w-full h-full object-contain rounded-lg" />
-                </div>
-                <div className="bg-stone-100 rounded-2xl p-4 flex flex-col items-center gap-2.5 mb-4 border border-stone-200">
-                  <span className="text-base sm:text-lg font-mono font-bold text-[#4A3B32] tracking-wider select-all break-all">64587589000159</span>
-                  <button onClick={copyPix} className="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/50 px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors w-full max-w-[150px]">
-                    Copiar Chave
+              {/* Segmented Control / Tabs for Payment Method */}
+              <div className="flex bg-stone-100 p-1 rounded-xl gap-1 mb-2">
+                <button
+                  onClick={() => setPaymentMethod('pix')}
+                  className={`flex-1 py-3 text-xs uppercase tracking-wider font-bold rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                    paymentMethod === 'pix'
+                      ? 'bg-white text-emerald-600 shadow-sm border border-emerald-500/10'
+                      : 'text-[#4A3B32]/60 hover:text-[#4A3B32]'
+                  }`}
+                >
+                  <i className="fa-brands fa-pix text-base" />
+                  <span>PIX</span>
+                </button>
+                <button
+                  onClick={() => setPaymentMethod('card')}
+                  className={`flex-1 py-3 text-xs uppercase tracking-wider font-bold rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                    paymentMethod === 'card'
+                      ? 'bg-white text-[#B65B46] shadow-sm border border-[#B65B46]/10'
+                      : 'text-[#4A3B32]/60 hover:text-[#4A3B32]'
+                  }`}
+                >
+                  <i className="fa-regular fa-credit-card text-base" />
+                  <span>Cartão</span>
+                </button>
+              </div>
+
+              {/* PIX Method */}
+              {paymentMethod === 'pix' && (
+                <div className="bg-white border-2 border-emerald-500/20 rounded-2xl p-5 text-center relative overflow-hidden slide-up-enter">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-emerald-50" />
+                  <i className="fa-brands fa-pix text-3xl text-emerald-500 mb-2" />
+                  <h4 className="font-bold text-[#4A3B32] mb-1 text-sm">Chave PIX (CNPJ)</h4>
+                  <p className="text-xs text-[#4A3B32]/70 mb-4 leading-relaxed">Aponte a câmera do seu banco para o QR Code ou copie a chave.</p>
+                  <div className="relative w-40 h-40 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 border border-stone-200/80 p-2 shadow-sm">
+                    <Image src="/pix_qrcode.png" alt="QR Code PIX" fill sizes="160px" className="object-contain rounded-lg" />
+                  </div>
+                  <div className="bg-stone-100 rounded-2xl p-3.5 flex flex-col items-center gap-2 mb-4 border border-stone-200">
+                    <span className="text-base font-mono font-bold text-[#4A3B32] tracking-wider select-all break-all">64587589000159</span>
+                    <button onClick={copyPix} className="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/50 px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors w-full max-w-[150px] cursor-pointer">
+                      Copiar Chave
+                    </button>
+                  </div>
+                  <button onClick={handleFinalize} disabled={loading} className="w-full bg-emerald-600 text-white uppercase tracking-wider text-xs font-bold py-4 rounded-xl shadow-sm hover:bg-emerald-700 transition-colors cursor-pointer">
+                    {loading ? 'Registrando...' : 'Confirmar Envio do Presente'}
                   </button>
                 </div>
-                <button onClick={handleFinalize} disabled={loading} className="w-full bg-emerald-600 text-white uppercase tracking-wider text-xs font-bold py-4 rounded-xl shadow-sm hover:bg-emerald-700 transition-colors">
-                  {loading ? 'Registrando...' : 'Confirmar Envio do Presente'}
-                </button>
-              </div>
+              )}
 
-              <div className="flex items-center gap-4">
-                <div className="flex-1 h-px bg-[#B65B46]/20" />
-                <span className="text-xs uppercase font-bold text-[#4A3B32]/40 tracking-wider">OU</span>
-                <div className="flex-1 h-px bg-[#B65B46]/20" />
-              </div>
+              {/* Card Method */}
+              {paymentMethod === 'card' && (
+                <div className="bg-white border border-[#B65B46]/10 rounded-2xl p-5 text-center slide-up-enter">
+                  <i className="fa-regular fa-credit-card text-3xl text-[#B65B46] mb-3" />
+                  <h4 className="font-bold text-[#4A3B32] text-sm mb-2">Cartão de Crédito</h4>
+                  <p className="text-xs text-[#4A3B32]/70 mb-5 leading-relaxed">
+                    Você será redirecionado para a plataforma segura da **InfinitePay** para concluir o pagamento de forma parcelada ou à vista.
+                  </p>
+                  <button onClick={handleCardPayment} disabled={loading} className="w-full bg-[#B65B46] text-white uppercase tracking-wider text-xs font-bold py-4 rounded-xl shadow-md hover:bg-[#D48C79] transition-colors cursor-pointer">
+                    {loading ? 'Preparando...' : 'Pagar com Cartão'}
+                  </button>
+                </div>
+              )}
 
-              {/* Card */}
-              <div className="bg-white border border-[#B65B46]/10 rounded-2xl p-5 text-center">
-                <i className="fa-regular fa-credit-card text-xl text-[#B65B46] mb-2" />
-                <h4 className="font-bold text-[#4A3B32] text-sm mb-2">Cartão de Crédito</h4>
-                <button onClick={handleFinalize} disabled={loading} className="w-full border border-[#4A3B32] text-[#4A3B32] uppercase tracking-wider text-xs font-bold py-3.5 rounded-xl hover:bg-[#4A3B32] hover:text-white transition-colors mt-1">
-                  {loading ? 'Registrando...' : 'Pagar com Cartão'}
-                </button>
-              </div>
-
-              <button onClick={() => setStep('form')} className="text-xs text-[#4A3B32]/60 underline text-center font-medium">
+              <button onClick={() => setStep('form')} className="text-xs text-[#4A3B32]/60 underline text-center font-medium mt-2">
                 Voltar e alterar dados
               </button>
             </div>
@@ -608,21 +672,21 @@ export default function GiftView({ onClose }) {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [selectedItem]);
 
-  const handleSelectGift = (item) => {
+  const handleSelectGift = useCallback((item) => {
     setSelectedItem(item);
     if (typeof window !== 'undefined') {
       window.history.pushState({ modalOpen: true }, '');
     }
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setSelectedItem(null);
     if (typeof window !== 'undefined' && window.history.state?.modalOpen) {
       window.history.back();
     }
-  };
+  }, []);
 
-  async function refreshData() {
+  const refreshData = useCallback(async () => {
     try {
       const { data } = await supabase.from('gifts').select('item_name, price, gifter_name');
       if (!data) return;
@@ -667,22 +731,29 @@ export default function GiftView({ onClose }) {
     } catch (e) {
       // silently fail
     }
-  }
+  }, []);
 
   useEffect(() => {
     refreshData();
     window.scrollTo(0, 0);
-  }, []);
+  }, [refreshData]);
 
-  function handleSuccess(item) {
+  const handleSuccess = useCallback((item) => {
     refreshData();
-  }
+  }, [refreshData]);
+
+  const containerRef = useRef(null);
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
+    }
+  }, []);
 
   return (
     <div
+      ref={containerRef}
       className={`mobile-container bg-paper-texture fixed inset-0 z-50 overflow-y-auto ${animationClass}`}
       onAnimationEnd={() => setAnimationClass('')}
-      ref={(el) => { if (el) el.scrollTop = 0; }}
     >
       {/* Header */}
       <div className="sticky top-0 bg-[#FAF6F0]/90 backdrop-blur-md z-40 px-6 py-4 flex items-center border-b border-[#B65B46]/10">

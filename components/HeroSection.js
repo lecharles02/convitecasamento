@@ -1,13 +1,21 @@
 'use client';
 
+import Image from 'next/image';
+
 export default function HeroSection({ onOpenRsvp, onOpenGift }) {
   return (
     <header className="relative w-full h-[100vh] h-[100dvh] flex flex-col items-center justify-between pb-6 pt-0 overflow-hidden">
       {/* Background Image */}
-      <div
-        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat z-0"
-        style={{ backgroundImage: "url('/background.webp')" }}
-      />
+      <div className="absolute inset-0 w-full h-full z-0">
+        <Image
+          src="/background.webp"
+          alt="Casamento"
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+      </div>
 
       {/* Overlays */}
       <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-black/30 to-black/85 z-10" />

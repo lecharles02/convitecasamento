@@ -36,9 +36,9 @@ export default function AdminView({ onClose }) {
   
   const showToast = useToast();
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => { loadData(); }, [loadData]);
 
-  function addEmptyFamily() {
+  const addEmptyFamily = useCallback(() => {
     const key = emptyFamilyInput.trim().toLowerCase();
     if (!key) {
       showToast('Digite uma chave de busca válida.');
@@ -52,40 +52,43 @@ export default function AdminView({ onClose }) {
     setEmptyFamilies(prev => [...prev, key]);
     setEmptyFamilyInput('');
     showToast(`Família "${key}" criada! Arraste convidados para ela.`, 'success');
-  }
+  }, [allGuests, emptyFamilies, emptyFamilyInput, showToast]);
 
   useEffect(() => {
     if (allGuests.length > 0 && emptyFamilies.length > 0) {
       const keysWithMembers = new Set(allGuests.map(g => g.search_key));
-      setEmptyFamilies(prev => prev.filter(key => !keysWithMembers.has(key)));
+      const filtered = emptyFamilies.filter(key => !keysWithMembers.has(key));
+      if (filtered.length !== emptyFamilies.length) {
+        setEmptyFamilies(filtered);
+      }
     }
   }, [allGuests, emptyFamilies]);
 
   // Expand/Collapse helper functions
-  function toggleFamilyCollapse(key) {
+  const toggleFamilyCollapse = useCallback((key) => {
     setCollapsedFamilies(prev => ({
       ...prev,
       [key]: !prev[key]
     }));
-  }
+  }, []);
 
-  function expandAllFamilies() {
+  const expandAllFamilies = useCallback(() => {
     const next = {};
     familyList.forEach(key => {
       next[key] = false;
     });
     setCollapsedFamilies(next);
-  }
+  }, [familyList]);
 
-  function collapseAllFamilies() {
+  const collapseAllFamilies = useCallback(() => {
     const next = {};
     familyList.forEach(key => {
       next[key] = true;
     });
     setCollapsedFamilies(next);
-  }
+  }, [familyList]);
 
-  async function saveInlineGuest(familyKey) {
+  const saveInlineGuest = useCallback(async (familyKey) => {
     if (!inlineGuestName.trim()) {
       showToast('O nome do convidado não pode ficar vazio.');
       return;
@@ -104,9 +107,9 @@ export default function AdminView({ onClose }) {
       setInlineGuestName('');
       loadData();
     }
-  }
+  }, [inlineGuestName, loadData, showToast]);
 
-  async function loadData() {
+  const loadData = useCallback(async () => {
     const { data: guests } = await supabase
       .from('guests')
       .select('*')
@@ -126,9 +129,9 @@ export default function AdminView({ onClose }) {
       setReceivedGifts(gifts);
       setTotalMoney(gifts.reduce((a, b) => a + parseFloat(b.price), 0));
     }
-  }
+  }, []);
 
-  async function saveEditGuest(id) {
+  const saveEditGuest = useCallback(async (id) => {
     if (!editName.trim() || !editSearchKey.trim()) {
       showToast('Nome e Chave de Busca não podem ficar vazios.');
       return;
@@ -147,9 +150,9 @@ export default function AdminView({ onClose }) {
     showToast('Convidado atualizado!', 'success');
     setEditingGuestId(null);
     loadData();
-  }
+  }, [editName, editSearchKey, loadData, showToast]);
 
-  async function deleteGuest(id, name) {
+  const deleteGuest = useCallback(async (id, name) => {
     if (confirm(`Tem certeza que deseja excluir ${name}?`)) {
       const originalAllGuests = allGuests;
       const originalConfirmedGuests = confirmedGuests;
@@ -177,9 +180,9 @@ export default function AdminView({ onClose }) {
         setConfirmedGuests(originalConfirmedGuests);
       }
     }
-  }
+  }, [allGuests, confirmedGuests, loadData, showToast]);
 
-  async function deleteGift(id, gifterName, itemName) {
+  const deleteGift = useCallback(async (id, gifterName, itemName) => {
     if (confirm(`Tem certeza que deseja excluir o presente de ${gifterName} (${itemName})?`)) {
       const originalGifts = receivedGifts;
       const originalTotal = totalMoney;
@@ -210,9 +213,9 @@ export default function AdminView({ onClose }) {
         setTotalMoney(originalTotal);
       }
     }
-  }
+  }, [receivedGifts, totalMoney, loadData, showToast]);
 
-  async function toggleConfirmation(guest) {
+  const toggleConfirmation = useCallback(async (guest) => {
     const newConfirmed = !guest.confirmed;
     const { error } = await supabase.from('guests')
       .update({
@@ -227,9 +230,9 @@ export default function AdminView({ onClose }) {
     }
     showToast(newConfirmed ? 'Presença confirmada!' : 'Confirmação cancelada.', 'success');
     loadData();
-  }
+  }, [loadData, showToast]);
 
-  async function handleMoveGuest(guestId, targetFamilyKey) {
+  const handleMoveGuest = useCallback(async (guestId, targetFamilyKey) => {
     if (!guestId || !targetFamilyKey) return;
     const guest = allGuests.find(g => g.id === guestId);
     if (!guest) return;
@@ -246,9 +249,9 @@ export default function AdminView({ onClose }) {
       showToast(`${guest.name} movido para a família "${targetFamilyKey}"!`, 'success');
       loadData();
     }
-  }
+  }, [allGuests, loadData, showToast]);
 
-  async function registerFamily() {
+  const registerFamily = useCallback(async () => {
     if (!newAlias.trim() || !newFamily.trim()) {
       showToast('Preencha a Chave de Busca e os nomes da Família.');
       return;
@@ -264,7 +267,7 @@ export default function AdminView({ onClose }) {
     showToast(`Família "${newAlias}" cadastrada!`, 'success');
     setNewAlias(''); setNewFamily('');
     loadData();
-  }
+  }, [newAlias, newFamily, loadData, showToast]);
 
   const filteredFamilies = useMemo(() => {
     const families = {};

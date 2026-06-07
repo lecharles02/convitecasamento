@@ -1,12 +1,15 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-const Unit = ({ value, label }) => (
+import React from 'react';
+
+const Unit = React.memo(({ value, label }) => (
   <div className="flex flex-col items-center">
     <span className="text-5xl font-pt-serif font-light text-[#4A3B32] mb-1.5">{value}</span>
     <span className="text-xs uppercase tracking-[0.25em] text-[#4A3B32]/75 font-medium">{label}</span>
   </div>
-);
+));
+Unit.displayName = 'Unit';
 
 export default function Countdown() {
   const [timeLeft, setTimeLeft] = useState({ days: '00', hours: '00', minutes: '00', seconds: '00' });

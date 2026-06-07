@@ -53,14 +53,17 @@ function StepSearch({ onFound }) {
       <label className="block text-xs uppercase tracking-wider font-bold text-[#4A3B32] mb-3 ml-4">
         Nome no Convite
       </label>
-      <input
-        type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-        placeholder="Ex: Jaqueline"
-        className="w-full bg-white border border-[#B65B46]/20 rounded-full px-6 py-4 text-sm focus:outline-none focus:border-[#B65B46] shadow-sm mb-4.5"
-      />
+      <div className="relative mb-4.5">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          placeholder="Ex: Jaqueline"
+          className="w-full bg-white border border-[#B65B46]/20 rounded-full pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-[#B65B46] shadow-sm"
+        />
+        <i className="fa-solid fa-magnifying-glass text-[#B65B46]/50 absolute left-5 top-1/2 -translate-y-1/2 text-sm" />
+      </div>
       <button
         onClick={handleSearch}
         disabled={loading}

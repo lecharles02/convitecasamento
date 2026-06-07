@@ -5,9 +5,9 @@ export async function POST(request) {
     const { password } = await request.json();
     
     const inputPwd = String(password || '').trim();
-    const serverPwd = String(process.env.ADMIN_PASSWORD || '2302').trim();
+    const serverPwd = String(process.env.ADMIN_PASSWORD || '').trim();
     
-    if (inputPwd === '2302' || inputPwd === serverPwd) {
+    if (serverPwd && inputPwd === serverPwd) {
       return NextResponse.json({ success: true });
     }
     

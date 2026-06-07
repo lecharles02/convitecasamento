@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { ToastProvider } from '@/components/ToastProvider';
+import { ToastProvider, useToast } from '@/components/ToastProvider';
 import HeroSection from '@/components/HeroSection';
 import Countdown from '@/components/Countdown';
 import VenueSection from '@/components/VenueSection';
@@ -12,6 +12,24 @@ const RsvpView = dynamic(() => import('@/components/RsvpView'), { ssr: false });
 const GiftView = dynamic(() => import('@/components/GiftView'), { ssr: false });
 const AdminView = dynamic(() => import('@/components/AdminView'), { ssr: false });
 const AdminLoginModal = dynamic(() => import('@/components/AdminLoginModal'), { ssr: false });
+
+function PaymentSuccessHandler() {
+  const showToast = useToast();
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('payment') === 'success') {
+      showToast('Muito obrigado pelo presente! Recebemos sua contribuição com sucesso. ❤️', 'success');
+      
+      // Remove query parameters while keeping hash
+      const newUrl = window.location.pathname + window.location.hash;
+      window.history.replaceState(null, '', newUrl);
+    }
+  }, [showToast]);
+
+  return null;
+}
 
 export default function Home() {
   const [view, setView] = useState('main'); // 'main' | 'rsvp' | 'gift' | 'admin'
@@ -69,6 +87,7 @@ export default function Home() {
 
   return (
     <ToastProvider>
+      <PaymentSuccessHandler />
       {/* Main View */}
       {view === 'main' && (
         <div className="mobile-container bg-paper-texture pb-8">
