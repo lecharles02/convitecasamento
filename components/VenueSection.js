@@ -1,3 +1,56 @@
+'use client';
+import { useState, useEffect, useRef } from 'react';
+
+function LazyIframe({ src, title }) {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      setIsIntersecting(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsIntersecting(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '300px' } // Carrega o mapa 300px antes de entrar na tela para ser suave
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={containerRef} className="w-full h-[140px] bg-stone-100 relative">
+      {isIntersecting ? (
+        <iframe
+          src={src}
+          width="100%"
+          height="140"
+          style={{ border: 0 }}
+          allowFullScreen
+          referrerPolicy="no-referrer-when-downgrade"
+          className="grayscale-[20%] contrast-[95%] opacity-90 transition-opacity object-cover w-full h-full"
+          title={title}
+        />
+      ) : (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-50 gap-2">
+          <i className="fa-solid fa-map-location-dot text-[#D48C79] text-lg animate-pulse" />
+          <span className="text-[10px] uppercase tracking-wider text-[#4A3B32]/50 font-semibold">Carregando mapa...</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function VenueSection() {
   return (
     <section className="py-10 px-6 relative">
@@ -25,15 +78,9 @@ export default function VenueSection() {
               <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm z-10 border border-[#D48C79]/20">
                 <span className="text-xs uppercase tracking-wider text-[#4A3B32] font-bold">Ver no Maps</span>
               </div>
-              <iframe
+              <LazyIframe
                 src="https://maps.google.com/maps?q=Bas%C3%ADlica+de+Nossa+Senhora+da+Penha,+Largo+da+Penha,+19&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                width="100%"
-                height="140"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="grayscale-[20%] contrast-[95%] opacity-90 transition-opacity group-hover:opacity-100 object-cover"
+                title="Mapa da Cerimônia - Basílica de Nossa Senhora da Penha"
               />
             </div>
 
@@ -87,15 +134,9 @@ export default function VenueSection() {
               <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm z-10 border border-[#D48C79]/20">
                 <span className="text-xs uppercase tracking-wider text-[#4A3B32] font-bold">Ver no Maps</span>
               </div>
-              <iframe
+              <LazyIframe
                 src="https://maps.google.com/maps?q=Rua+Tom%C3%A1s+Ribeiro,+15+Penha+Rio+de+Janeiro&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                width="100%"
-                height="140"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="grayscale-[20%] contrast-[95%] opacity-90 transition-opacity group-hover:opacity-100 object-cover"
+                title="Mapa da Recepção - Espaço Encaza"
               />
             </div>
 
