@@ -41,17 +41,17 @@ const PHYSICAL_ITEMS = [
   { id: 'potes-hermeticos', name: 'Conjunto de Potes Herméticos',    icon: 'fa-boxes-stacked',  image: '/POTE HERMETICOS 2.webp' },
   { id: 'porta-condimento', name: 'Porta Condimento Giratório',      icon: 'fa-arrows-spin',    image: '/PORTA TEMPEIRO GIRATORIO.webp' },
   { id: 'robo-aspirador',   name: 'Robô Aspirador',                  icon: 'fa-robot',          image: '/ROBO ASPIRADOR.webp' },
-  { id: 'jogo-cama',        name: 'Jogo de Cama (King)',             icon: 'fa-bed',            image: '/JOGO DE CAMA KING SIZE.webp' },
-  { id: 'jogo-toalha',      name: 'Jogo de Toalha',                  icon: 'fa-shower',         image: '/JOGO DE TOALHA 2.webp' },
-  { id: 'manta-sofa',       name: 'Manta para Sofá',                 icon: 'fa-couch',          image: '/MANTA PARA SOFÁ.webp' },
+  { id: 'jogo-cama',        name: 'Jogo de Cama King (Preto e Cinza)', icon: 'fa-bed',          image: '/JOGO DE CAMA KING SIZE.webp' },
+  { id: 'jogo-toalha',      name: 'Jogo de Toalha (Preto e Cinza)',  icon: 'fa-shower',         image: '/JOGO DE TOALHA 2.webp' },
+  { id: 'manta-sofa',       name: 'Manta para Sofá (Marrom, Bege ou Preto)', icon: 'fa-couch',   image: '/MANTA PARA SOFÁ.webp' },
   { id: 'abajour',          name: 'Abajour',                         icon: 'fa-lightbulb',      image: '/ABAJUR 2.webp' },
   { id: 'ventilador',       name: 'Ventilador de Chão',              icon: 'fa-fan',            image: '/VENTILADOR DE CHÃO.webp', position: 'center 20%' },
 ];
 
 // ─── QUOTA ITEMS ─────────────────────────────────────────────────────────────
 const QUOTA_ITEMS = [
-  { id: 'geladeira',       name: 'Geladeira Nova',       icon: 'fa-snowflake',    price: 100, image: '/GELADEIRA.webp',     description: 'Ajude a refrigerar nosso novo lar com amor ❄️' },
-  { id: 'guarda-roupa',    name: 'Guarda-Roupa',         icon: 'fa-shirt',        price: 100, image: '/GUARDA ROUPA 2.webp',   description: 'Para organizar tudo com estilo no novo apartamento 👗' },
+  { id: 'geladeira',       name: 'Geladeira Nova',       icon: 'fa-snowflake',    price: 100, image: '/GELADEIRA.webp',     description: 'Ajude a refrigerar nossa casa com amor ❄️' },
+  { id: 'guarda-roupa',    name: 'Guarda-Roupa',         icon: 'fa-shirt',        price: 100, image: '/GUARDA ROUPA 2.webp',   description: 'Para organizar tudo com estilo em nossa casa 👗' },
   { id: 'armario-cozinha', name: 'Armário de Cozinha',   icon: 'fa-door-closed',  price: 100, image: '/ARMARIO DE COZINHA.avif', description: 'Panelas, mantimentos e muita organização 🍳' },
 ];
 
@@ -777,7 +777,7 @@ export default function GiftView({ onClose }) {
             </div>
             <div className="bg-white/60 p-3 rounded-xl shadow-sm border border-[#B65B46]/10 flex gap-3 items-center">
               <i className="fa-solid fa-home text-[#B65B46] text-lg w-6 text-center" />
-              <span><strong>Cotas:</strong> Ajude a comprar itens mais caros adquirindo cotas (R$ 100 cada).</span>
+              <span><strong>Cotas:</strong> Ajude a comprar itens mais caros adquirindo cotas.</span>
             </div>
             <div className="bg-white/60 p-3 rounded-xl shadow-sm border border-[#B65B46]/10 flex gap-3 items-center">
               <i className="fa-solid fa-box-open text-[#B65B46] text-lg w-6 text-center" />
@@ -793,7 +793,7 @@ export default function GiftView({ onClose }) {
         />
 
         {/* ── SECTION 2: COTAS PARA O LAR ── */}
-        <SectionDivider icon="fa-home" label="Cotas para o Novo Lar" />
+        <SectionDivider icon="fa-home" label="Cotas para o Lar" />
         <p className="text-sm sm:text-base text-[#4A3B32]/80 text-center mb-3 max-w-[360px] mx-auto leading-relaxed font-medium">
           As cotas são contribuições em dinheiro que nos ajudam a equipar a nossa casa. O valor é de R$ 100,00 por cota.
         </p>

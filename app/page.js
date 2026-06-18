@@ -126,7 +126,7 @@ export default function Home() {
               <div className="w-10 h-px bg-[#C5A059]/50" />
             </div>
             <p className="text-sm text-[#4A3B32]/80 leading-relaxed mb-6 max-w-[280px] mx-auto">
-              Para evitar presentes que já temos em nossa casa, separamos algumas sugestões para aqueles que desejarem nos presentear. Com a nossa mudança, precisamos apenas de alguns itens pontuais para o novo lar.
+              Para evitar presentes que já temos em nossa casa, separamos algumas sugestões para aqueles que desejarem nos presentear. Com a nossa mudança, precisamos apenas de alguns itens pontuais para o nosso lar.
             </p>
             <button
               onClick={() => navigateTo('gift')}
