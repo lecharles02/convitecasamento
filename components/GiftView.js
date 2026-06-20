@@ -41,7 +41,7 @@ const PHYSICAL_ITEMS = [
   { id: 'potes-hermeticos', name: 'Conjunto de Potes Herméticos',    icon: 'fa-boxes-stacked',  image: '/POTE HERMETICOS 2.webp' },
   { id: 'porta-condimento', name: 'Porta Condimento Giratório',      icon: 'fa-arrows-spin',    image: '/PORTA TEMPEIRO GIRATORIO.webp' },
   { id: 'robo-aspirador',   name: 'Robô Aspirador',                  icon: 'fa-robot',          image: '/ROBO ASPIRADOR.webp' },
-  { id: 'jogo-cama',        name: 'Jogo de Cama King (Preto e Cinza)', icon: 'fa-bed',          image: '/JOGO DE CAMA KING SIZE.webp' },
+  { id: 'jogo-cama',        name: 'Jogo de Cama Queen (Preto e Cinza)', icon: 'fa-bed',          image: '/JOGO DE CAMA QUEEN SIZE.webp' },
   { id: 'jogo-toalha',      name: 'Jogo de Toalha (Preto e Cinza)',  icon: 'fa-shower',         image: '/JOGO DE TOALHA 2.webp' },
   { id: 'manta-sofa',       name: 'Manta para Sofá (Marrom, Bege ou Preto)', icon: 'fa-couch',   image: '/MANTA PARA SOFÁ.webp' },
   { id: 'abajour',          name: 'Abajour',                         icon: 'fa-lightbulb',      image: '/ABAJUR 2.webp' },
