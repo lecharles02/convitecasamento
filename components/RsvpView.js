@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { supabase } from '@/lib/supabase';
 import { useToast } from './ToastProvider';
 
-function StepSearch({ onFound }) {
+function StepSearch({ onSearchResult }) {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -18,26 +18,45 @@ function StepSearch({ onFound }) {
     setLoading(true);
     setError(false);
     try {
-      const cleanedInput = input.toLowerCase().trim();
-      // 1. Search for guests matching either search_key or name
-      const { data: matchedGuests, error: err1 } = await supabase
+      const normalizeText = (str) =>
+        str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim() : '';
+
+      const searchNormalized = normalizeText(input);
+
+      // Fetch all guests to perform accent-insensitive and flexible matching in memory
+      const { data: allGuests, error: err1 } = await supabase
         .from('guests')
-        .select('*')
-        .or(`search_key.eq.${cleanedInput},name.ilike.%${cleanedInput}%`);
+        .select('*');
 
       if (err1) throw err1;
 
-      if (matchedGuests && matchedGuests.length > 0) {
-        // Get all unique search keys from matched guests
-        const searchKeys = [...new Set(matchedGuests.map((g) => g.search_key))];
-        // 2. Fetch all members belonging to these families
-        const { data: familyMembers, error: err2 } = await supabase
-          .from('guests')
-          .select('*')
-          .in('search_key', searchKeys);
+      if (allGuests && allGuests.length > 0) {
+        // Filter guests matching either search_key or name (accent-insensitive)
+        const matchedGuests = allGuests.filter((guest) => {
+          const guestSearchKey = normalizeText(guest.search_key);
+          const guestName = normalizeText(guest.name);
+          return guestSearchKey === searchNormalized || guestName.includes(searchNormalized);
+        });
 
-        if (err2) throw err2;
-        onFound(familyMembers);
+        if (matchedGuests.length > 0) {
+          // Get all unique search keys from matched guests
+          const searchKeys = [...new Set(matchedGuests.map((g) => g.search_key))];
+          
+          if (searchKeys.length === 1) {
+            // Only one family matches, proceed directly to family confirmation
+            const familyMembers = allGuests.filter((g) => g.search_key === searchKeys[0]);
+            onSearchResult({ type: 'single', data: familyMembers });
+          } else {
+            // Multiple families matched
+            const familiesList = searchKeys.map((key) => ({
+              search_key: key,
+              members: allGuests.filter((g) => g.search_key === key)
+            }));
+            onSearchResult({ type: 'multiple', data: familiesList });
+          }
+        } else {
+          setError(true);
+        }
       } else {
         setError(true);
       }
@@ -77,6 +96,56 @@ function StepSearch({ onFound }) {
           Convite não encontrado. Tente apenas o primeiro nome.
         </p>
       )}
+    </div>
+  );
+}
+
+function StepSelectFamily({ families, onSelect, onBack }) {
+  return (
+    <div className="flex flex-col gap-4">
+      <h3 className="font-serif text-lg text-[#4A3B32] mb-2 text-center border-b border-[#B65B46]/20 pb-4">
+        Vários convites encontrados!
+      </h3>
+      <p className="text-xs text-[#4A3B32]/70 text-center mb-4 leading-relaxed">
+        Encontramos mais de um convite correspondente. Por favor, selecione o seu grupo familiar:
+      </p>
+      <div className="flex flex-col gap-3 mb-6">
+        {families.map((fam, index) => {
+          const names = fam.members.map(m => m.name);
+          let formattedNames = "";
+          if (names.length === 1) {
+            formattedNames = names[0];
+          } else if (names.length === 2) {
+            formattedNames = `${names[0]} e ${names[1]}`;
+          } else {
+            formattedNames = `${names.slice(0, -1).join(', ')} e ${names[names.length - 1]}`;
+          }
+
+          return (
+            <div
+              key={fam.search_key}
+              onClick={() => onSelect(fam.members)}
+              className="bg-white border border-[#B65B46]/20 p-5 rounded-2xl cursor-pointer hover:border-[#B65B46] shadow-sm hover:shadow-md hover:bg-stone-50/50 transition-all flex flex-col gap-2 text-left"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#B65B46]">
+                  Opção {index + 1}
+                </span>
+                <i className="fa-solid fa-chevron-right text-xs text-[#B65B46]/50" />
+              </div>
+              <p className="font-serif text-sm sm:text-base text-[#4A3B32] font-semibold leading-relaxed">
+                {formattedNames}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+      <button
+        onClick={onBack}
+        className="w-full border border-[#4A3B32] text-[#4A3B32] uppercase tracking-wider text-xs font-bold py-3.5 px-6 rounded-full btn-elegant"
+      >
+        Voltar e Pesquisar Novamente
+      </button>
     </div>
   );
 }
@@ -273,13 +342,15 @@ function StepSuccess({ onClose, onOpenGifts }) {
 }
 
 export default function RsvpView({ onClose, onOpenGifts }) {
-  const [step, setStep] = useState('search'); // 'search' | 'family' | 'success'
+  const [step, setStep] = useState('search'); // 'search' | 'select-family' | 'family' | 'success'
   const [family, setFamily] = useState([]);
+  const [multipleFamilies, setMultipleFamilies] = useState([]);
   const [animationClass, setAnimationClass] = useState('slide-up-enter');
 
   function handleReset() {
     setStep('search');
     setFamily([]);
+    setMultipleFamilies([]);
   }
 
   return (
@@ -304,8 +375,26 @@ export default function RsvpView({ onClose, onOpenGifts }) {
                 Digite seu nome abaixo para buscar seu convite e confirmar quem da sua família estará presente.
               </p>
             </div>
-            <StepSearch onFound={(data) => { setFamily(data); setStep('family'); }} />
+            <StepSearch onSearchResult={(result) => {
+              if (result.type === 'single') {
+                setFamily(result.data);
+                setStep('family');
+              } else {
+                setMultipleFamilies(result.data);
+                setStep('select-family');
+              }
+            }} />
           </>
+        )}
+        {step === 'select-family' && (
+          <StepSelectFamily
+            families={multipleFamilies}
+            onSelect={(selectedFamily) => {
+              setFamily(selectedFamily);
+              setStep('family');
+            }}
+            onBack={handleReset}
+          />
         )}
         {step === 'family' && (
           <StepFamily family={family} onSuccess={() => setStep('success')} />

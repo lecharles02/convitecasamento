@@ -255,12 +255,17 @@ export default function AdminView({ onClose }) {
   }, [newAlias, newFamily, loadData, showToast]);
 
   const filteredFamilies = useMemo(() => {
+    const normalizeText = (str) =>
+      str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : '';
+
+    const searchNormalized = normalizeText(searchTerm);
     const families = {};
+
     allGuests.forEach((guest) => {
       const key = guest.search_key || 'sem-familia';
       const matchesSearch = 
-        guest.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        key.toLowerCase().includes(searchTerm.toLowerCase());
+        normalizeText(guest.name).includes(searchNormalized) ||
+        normalizeText(key).includes(searchNormalized);
         
       if (searchTerm === '' || matchesSearch) {
         if (!families[key]) {
@@ -271,7 +276,7 @@ export default function AdminView({ onClose }) {
     });
 
     emptyFamilies.forEach((key) => {
-      const matchesSearch = key.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = normalizeText(key).includes(searchNormalized);
       if (searchTerm === '' || matchesSearch) {
         if (!families[key]) {
           families[key] = [];
@@ -325,12 +330,15 @@ export default function AdminView({ onClose }) {
   }, [totalMoney]);
 
   const filteredGifts = useMemo(() => {
-    const term = giftSearchTerm.toLowerCase();
+    const normalizeText = (str) =>
+      str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : '';
+
+    const termNormalized = normalizeText(giftSearchTerm);
     return receivedGifts.filter(gift => {
       return (
-        gift.gifter_name.toLowerCase().includes(term) ||
-        gift.item_name.toLowerCase().includes(term) ||
-        (gift.message && gift.message.toLowerCase().includes(term))
+        normalizeText(gift.gifter_name).includes(termNormalized) ||
+        normalizeText(gift.item_name).includes(termNormalized) ||
+        (gift.message && normalizeText(gift.message).includes(termNormalized))
       );
     });
   }, [receivedGifts, giftSearchTerm]);
