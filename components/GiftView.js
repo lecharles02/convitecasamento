@@ -37,11 +37,13 @@ const PHYSICAL_ITEMS = [
   { id: 'forno-eletrico',   name: 'Forno Elétrico',                  icon: 'fa-fire-burner',    image: '/FORNO ELETRICO.webp' },
   { id: 'cafeteira',        name: 'Cafeteira',                       icon: 'fa-mug-hot',        image: '/CAFETEIRA.webp' },
   { id: 'panela-eletrica',  name: 'Panela Elétrica',                 icon: 'fa-bowl-food',      image: '/PANELA ELETRICA.webp' },
-  { id: 'frigideira',       name: 'Frigideira Antiaderente',         icon: 'fa-kitchen-set',    image: '/FRIGIDEIRA ANTIADERENTE.webp' },
+  { id: 'frigideira',       name: '1ª Frigideira Antiaderente',         icon: 'fa-kitchen-set',    image: '/FRIGIDEIRA ANTIADERENTE.webp' },
+  { id: 'frigideira-2',     name: '2ª Frigideira Antiaderente',         icon: 'fa-kitchen-set',    image: '/FRIGIDEIRA ANTIADERENTE.webp' },
   { id: 'potes-hermeticos', name: 'Conjunto de Potes Herméticos',    icon: 'fa-boxes-stacked',  image: '/POTE HERMETICOS 2.webp' },
   { id: 'porta-condimento', name: 'Porta Condimento Giratório',      icon: 'fa-arrows-spin',    image: '/PORTA TEMPEIRO GIRATORIO.webp' },
   { id: 'robo-aspirador',   name: 'Robô Aspirador',                  icon: 'fa-robot',          image: '/ROBO ASPIRADOR.webp' },
-  { id: 'jogo-cama',        name: 'Jogo de Cama Queen (Preto e Cinza)', icon: 'fa-bed',          image: '/JOGO DE CAMA QUEEN SIZE.webp' },
+  { id: 'jogo-cama',        name: '1º Jogo de Cama Queen (Preto e Cinza)', icon: 'fa-bed',          image: '/JOGO DE CAMA QUEEN SIZE.webp' },
+  { id: 'jogo-cama-2',      name: '2º Jogo de Cama Queen (Preto e Cinza)', icon: 'fa-bed',          image: '/JOGO DE CAMA QUEEN SIZE.webp' },
   { id: 'jogo-toalha',      name: 'Jogo de Toalha (Preto e Cinza)',  icon: 'fa-shower',         image: '/JOGO DE TOALHA 2.webp' },
   { id: 'manta-sofa',       name: 'Manta para Sofá (Marrom, Bege ou Preto)', icon: 'fa-couch',   image: '/MANTA PARA SOFÁ.webp' },
   { id: 'abajour',          name: 'Abajour',                         icon: 'fa-lightbulb',      image: '/ABAJUR 2.webp' },
@@ -91,7 +93,7 @@ const PhysicalCard = React.memo(({ item, claimedBy, onSelect }) => {
       {claimed && (
         <div className="absolute top-3 right-3 z-10 bg-[#4A3B32] text-white text-[8px] uppercase tracking-widest font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
           <i className="fa-solid fa-check" />
-          Escolhido
+          Já Escolhido
         </div>
       )}
 
@@ -114,12 +116,7 @@ const PhysicalCard = React.memo(({ item, claimedBy, onSelect }) => {
           <h4 className={`font-bold text-sm leading-tight mb-1.5 ${claimed ? 'text-stone-400 line-through' : 'text-[#4A3B32]'}`}>
             {item.name}
           </h4>
-          {claimed ? (
-            <p className="text-xs text-stone-400 font-semibold flex items-center gap-1">
-              <i className="fa-solid fa-heart text-[10px]" />
-              {claimedBy}
-            </p>
-          ) : (
+          {claimed ? null : (
             <div className="flex flex-col gap-0.5">
               <span className="text-sm text-emerald-600 font-bold flex items-center gap-1.5">
                 <i className="fa-solid fa-circle text-[7px] text-emerald-500 animate-pulse" />
@@ -703,7 +700,12 @@ export default function GiftView({ onClose }) {
         const price = parseFloat(row.price) || 0;
 
         // Physical items
-        const physMatch = PHYSICAL_ITEMS.find(i => name.toLowerCase().includes(i.name.toLowerCase()) || name.toLowerCase().includes(i.id));
+        const physMatch = PHYSICAL_ITEMS.find(i => 
+          name.toLowerCase() === i.name.toLowerCase() || 
+          name.toLowerCase() === i.id ||
+          (i.id === 'jogo-cama' && name.toLowerCase() === 'jogo de cama queen (preto e cinza)') ||
+          (i.id === 'frigideira' && name.toLowerCase() === 'frigideira antiaderente')
+        );
         if (physMatch && !name.includes('cota')) {
           newClaimed[physMatch.id] = row.gifter_name || 'Alguém especial';
         }
