@@ -905,9 +905,15 @@ export default function AdminView({ onClose }) {
                       </p>
                     </div>
                     <div className="shrink-0 flex items-center gap-2 self-end md:self-start">
-                      <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg shadow-sm border border-emerald-100">
-                        R$ {parseFloat(gift.price).toFixed(2).replace('.', ',')}
-                      </span>
+                      {parseFloat(gift.price) === 0 ? (
+                        <span className="text-xs font-bold text-stone-600 bg-stone-100 px-2.5 py-1 rounded-lg shadow-sm border border-stone-200">
+                          Presente Físico
+                        </span>
+                      ) : (
+                        <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg shadow-sm border border-emerald-100">
+                          R$ {parseFloat(gift.price).toFixed(2).replace('.', ',')}
+                        </span>
+                      )}
                       <button 
                         onClick={() => deleteGift(gift.id, gift.gifter_name, gift.item_name)} 
                         className="text-stone-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-all cursor-pointer"

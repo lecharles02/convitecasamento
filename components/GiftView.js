@@ -279,7 +279,9 @@ function PaymentModal({ item, onClose, onSuccess }) {
     ? parseFloat(customPrice) || 0
     : isQuota
     ? item.price * quotaQty
-    : item.price;
+    : isPhysical
+    ? 0
+    : item.price || 0;
 
   const isDirty = name || message || customPrice || quotaQty > 1;
 
