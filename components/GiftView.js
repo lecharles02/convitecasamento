@@ -41,7 +41,6 @@ const PHYSICAL_ITEMS = [
   { id: 'frigideira-2',     name: '2ª Frigideira Antiaderente',         icon: 'fa-kitchen-set',    image: '/FRIGIDEIRA ANTIADERENTE.webp' },
   { id: 'potes-hermeticos', name: 'Conjunto de Potes Herméticos',    icon: 'fa-boxes-stacked',  image: '/POTE HERMETICOS 2.webp' },
   { id: 'porta-condimento', name: 'Porta Condimento Giratório',      icon: 'fa-arrows-spin',    image: '/PORTA TEMPEIRO GIRATORIO.webp' },
-  { id: 'robo-aspirador',   name: 'Robô Aspirador',                  icon: 'fa-robot',          image: '/ROBO ASPIRADOR.webp' },
   { id: 'jogo-cama',        name: '1º Jogo de Cama Queen (Preto e Cinza)', icon: 'fa-bed',          image: '/JOGO DE CAMA QUEEN SIZE.webp' },
   { id: 'jogo-cama-2',      name: '2º Jogo de Cama Queen (Preto e Cinza)', icon: 'fa-bed',          image: '/JOGO DE CAMA QUEEN SIZE.webp' },
   { id: 'jogo-toalha',      name: 'Jogo de Toalha (Preto e Cinza)',  icon: 'fa-shower',         image: '/JOGO DE TOALHA 2.webp' },
@@ -305,7 +304,7 @@ function PaymentModal({ item, onClose, onSuccess }) {
   }
 
   function copyPix() {
-    navigator.clipboard.writeText('64587589000159')
+    navigator.clipboard.writeText('+5521970810493')
       .then(() => showToast('Chave PIX copiada!', 'success'))
       .catch(() => showToast('Não foi possível copiar automaticamente.'));
   }
@@ -571,13 +570,14 @@ function PaymentModal({ item, onClose, onSuccess }) {
                 <div className="bg-white border-2 border-emerald-500/20 rounded-2xl p-5 text-center relative overflow-hidden slide-up-enter">
                   <div className="absolute top-0 left-0 w-full h-1 bg-emerald-50" />
                   <i className="fa-brands fa-pix text-3xl text-emerald-500 mb-2" />
-                  <h4 className="font-bold text-[#4A3B32] mb-1 text-sm">Chave PIX (CNPJ)</h4>
+                  <h4 className="font-bold text-[#4A3B32] mb-1 text-sm">Chave PIX (Celular)</h4>
                   <p className="text-xs text-[#4A3B32]/70 mb-4 leading-relaxed">Aponte a câmera do seu banco para o QR Code ou copie a chave.</p>
                   <div className="relative w-40 h-40 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 border border-stone-200/80 p-2 shadow-sm">
                     <Image src="/pix_qrcode.png" alt="QR Code PIX" fill sizes="160px" className="object-contain rounded-lg" />
                   </div>
                   <div className="bg-stone-100 rounded-2xl p-3.5 flex flex-col items-center gap-2 mb-4 border border-stone-200">
-                    <span className="text-base font-mono font-bold text-[#4A3B32] tracking-wider select-all break-all">64587589000159</span>
+                    <span className="text-base font-mono font-bold text-[#4A3B32] tracking-wider select-all break-all">+55 21 97081-0493</span>
+                    <span className="text-xs text-[#4A3B32]/70">Leonardo Charles Pinto • Nubank</span>
                     <button onClick={copyPix} className="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/50 px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors w-full max-w-[150px] cursor-pointer">
                       Copiar Chave
                     </button>
