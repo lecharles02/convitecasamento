@@ -28,13 +28,17 @@ export const viewport = {
 };
 
 export const metadata = {
+  metadataBase: new URL('https://meuconvitecasamento.vercel.app'),
   title: 'Convite de Casamento - Danielly & Leonardo',
   description: 'Com a bênção de Deus, temos a alegria de convidar você para celebrar o nosso casamento! 23 de Agosto de 2026.',
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: 'Convite de Casamento - Danielly & Leonardo',
     description: 'Com a bênção de Deus, temos a alegria de convidar você para celebrar o nosso casamento! 23 de Agosto de 2026.',
     images: ['https://iili.io/CK4MAZB.jpg'],
-    url: 'https://danieleonardo.com.br',
+    url: '/',
     type: 'website',
   },
 };
